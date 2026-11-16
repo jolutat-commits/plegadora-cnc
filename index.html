@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard SCADA - Plegadora Nargesa MP3003CNC</title>
     
+    <!-- METADATOS Y MANIFEST CON ICONO NATIVO VECTORIAL INCORPORADO -->
     <meta name="theme-color" content="#2c3e50">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,7 +16,14 @@
         %22display%22: %22standalone%22,
         %22background_color%22: %22%231e272e%22,
         %22theme_color%22: %22%232c3e50%22,
-        %22icons%22: []
+        %22icons%22: [
+            {
+                %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%232c3e50'/%3E%3Cpath d='M150 180h212v150H150z' fill='%2334495e' stroke='%23f1c40f' stroke-width='12'/%3E%3Ccircle cx='256' cy='256' r='60' fill='%2327ae60'/%3E%3Cpath d='M100 380h312v40H100z' fill='%23e74c3c'/%3E%3C/svg%3E%22,
+                %22sizes%22: %22512x512%22,
+                %22type%22: %22image/svg+xml%22,
+                %22purpose%22: %22any maskable%22
+            }
+        ]
     }">
 
     <style>
@@ -159,14 +167,11 @@
         .haz-laser.roto { opacity: 0.2; stroke: #c0392b; animation: parpadeo 0.2s infinite; }
         .eje-x { transition: transform 0.5s ease-out; }
         
-        /* ESTILOS DE RETROALIMENTACIÓN DINÁMICA DE ACTUADORES */
         .cilindro-cuerpo { transition: fill 0.2s, stroke 0.2s; }
         .cilindro-activo { fill: #d5f5e3 !important; stroke: #27ae60 !important; }
         .cilindro-prensando { fill: #f9e79f !important; stroke: #d35400 !important; }
         .servo-activo { fill: #f39c12 !important; }
         .crowning-activo { transform: translateY(-4px); fill: #e67e22 !important; }
-        .sensor-activo { fill: #2ecc71 !important; }
-        .sensor-alerta { fill: #e74c3c !important; animation: parpadeo 0.5s infinite; }
     </style>
 </head>
 <body>
@@ -311,7 +316,6 @@
                 <rect x="380" y="110" width="580" height="420" fill="none" stroke="#bdc3c7" stroke-width="2" stroke-dasharray="15,5"/>
                 <text x="670" y="130" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#bdc3c7">BASTIDOR MECÁNICO PLEGADORA</text>
 
-                <!-- CILINDRO Y1 CON ID PARA CAMBIO DE COLOR -->
                 <g transform="translate(480, 160)">
                     <rect id="cil-y1-body" class="cilindro-cuerpo" x="-40" y="0" width="80" height="110" fill="none" stroke="#2c3e50" stroke-width="3"/>
                     <g class="parte-movil">
@@ -322,7 +326,6 @@
                     <text x="0" y="-30" text-anchor="middle" class="texto-tag">CYL-Y1</text>
                 </g>
 
-                <!-- CILINDRO Y2 CON ID PARA CAMBIO DE COLOR -->
                 <g transform="translate(860, 160)">
                     <rect id="cil-y2-body" class="cilindro-cuerpo" x="-40" y="0" width="80" height="110" fill="none" stroke="#2c3e50" stroke-width="3"/>
                     <g class="parte-movil">
@@ -350,11 +353,9 @@
                     <polygon points="450,480 890,480 670,510" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
                     <text x="670" y="538" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#34495e">MESA V-DIE</text>
                 </g>
-                <!-- CILINDRO CROWNING CON ID PARA CAMBIO DE COLOR -->
                 <rect id="cil-crowning" x="520" y="520" width="40" height="30" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2" style="transition: fill 0.2s;"/>
                 <text x="580" y="539" text-anchor="start" class="texto-tag">CYL-C (Abombado)</text>
 
-                <!-- TOPE TRASERO CON ID PARA CAMBIO DE COLOR -->
                 <g id="tope-trasero" class="eje-x" transform="translateX(100)">
                     <rect id="servo-x-box" x="790" y="430" width="30" height="50" fill="#e67e22" stroke="#2c3e50" stroke-width="2" style="transition: fill 0.2s;"/>
                     <line x1="820" y1="455" x2="890" y2="455" stroke="#2c3e50" stroke-width="4" stroke-dasharray="10,5"/>
@@ -362,7 +363,6 @@
                     <text x="840" y="420" text-anchor="middle" class="texto-tag">SERVO X</text>
                 </g>
 
-                <!-- ENCODERS ZT CON DIODOS DINÁMICOS -->
                 <g transform="translate(360, 240)">
                     <rect x="0" y="0" width="12" height="140" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
                     <use href="#isa-bubble" x="-35" y="70"/>
@@ -414,15 +414,13 @@
                 <polygon points="660,660 680,660 670,675" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
                 <text x="705" y="672" text-anchor="middle" class="texto-tag">FLT-1</text>
 
-                <!-- SENSOR TT-101 CON ID DE COLOR -->
                 <use href="#isa-bubble" x="240" y="700"/>
                 <text x="240" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">TT</text>
                 <text x="240" y="709" text-anchor="middle" font-family="Arial" font-size="10">101</text>
                 <line x1="222" y1="700" x2="190" y2="700" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,2"/>
                 
-                <!-- SENSOR LS-101 CON ID DE COLOR -->
                 <use href="#isa-bubble" x="60" y="700"/>
-                <text id="bubble-ls" x="60" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11" fill="#2c3e50">LS</text>
+                <text x="60" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">LS</text>
                 <text x="60" y="709" text-anchor="middle" font-family="Arial" font-size="10">101</text>
                 <line x1="78" y1="700" x2="110" y2="700" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,2"/>
 
@@ -480,7 +478,6 @@
         const dibujoLaser = document.getElementById('linea-laser');
         const cilindroCrowning = document.getElementById('matriz-inferior');
         
-        // Referencias de Elementos Gráficos con Cambio de Color Dinámico
         const cilY1Body = document.getElementById('cil-y1-body');
         const cilY2Body = document.getElementById('cil-y2-body');
         const cilCrowning = document.getElementById('cil-crowning');
@@ -596,7 +593,6 @@
             let pxX = (150 - posX) * -1.5; 
             grupoEjeX.style.transform = `translateX(${pxX}px)`;
 
-            // Limpieza general de estados de color
             document.getElementById('valvula-y1').classList.remove('valvula-activa');
             document.getElementById('valvula-y2').classList.remove('valvula-activa');
             document.querySelectorAll('.linea-presion').forEach(l => l.classList.remove('linea-activa'));
@@ -604,12 +600,11 @@
             barraPresion.classList.remove('full');
             ledY1.classList.remove('on'); ledY2.classList.remove('on');
             
-            // Reset colores gráficos actuadores
             cilY1Body.className = "cilindro-cuerpo";
             cilY2Body.className = "cilindro-cuerpo";
             cilCrowning.classList.remove('crowning-activo');
             servoXBox.classList.remove('servo-activo');
-            diodeColor = "#e74c3c";
+            let diodeColor = "#e74c3c";
 
             if (estado === "EMG") {
                 dispPresion.innerText = "0.0 bar";
@@ -623,7 +618,7 @@
                 dispPresion.innerText = "15.0 bar";
                 dispPresion.classList.add('cool');
                 barraPresion.style.width = "10%";
-                servoXBox.classList.add('servo-activo'); // Servo X encendido moviendo tope
+                servoXBox.classList.add('servo-activo'); 
                 diodeColor = "#2ecc71";
             }
             else if (estado === "BAJANDO") {
@@ -637,7 +632,7 @@
                 
                 cilY1Body.classList.add('cilindro-activo');
                 cilY2Body.classList.add('cilindro-activo');
-                diodeColor = "#2ecc71"; // Encoders activos midiendo velocidad
+                diodeColor = "#2ecc71"; 
             } 
             else if (estado === "HOLD") {
                 dispPresion.innerText = presionTrabajo.toFixed(1) + " bar"; 
@@ -647,7 +642,7 @@
                 
                 cilY1Body.classList.add('cilindro-prensando');
                 cilY2Body.classList.add('cilindro-prensando');
-                cilCrowning.classList.add('crowning-activo'); // Mesa de abombado aplicando fuerza
+                cilCrowning.classList.add('crowning-activo'); 
                 diodeColor = "#f1c40f";
             } 
             else if (estado === "SUBIENDO") {
@@ -669,7 +664,6 @@
                 barraPresion.style.width = "10%";
             }
 
-            // Aplicar color dinámico a los diodos de las reglas ópticas ZT
             diodoZT1.style.fill = diodeColor;
             diodoZT2.style.fill = diodeColor;
         }
