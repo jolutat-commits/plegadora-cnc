@@ -123,7 +123,7 @@
         .hud-alerta { background-color: rgba(231, 76, 60, 0.95); border-left-color: #c0392b; color: #fff; }
         .hud-alerta .hud-title { color: #f1c40f; border-bottom-color: rgba(255,255,255,0.5); }
 
-        /* ESTILOS PRESENTACIÓN PPT */
+        /* ESTILOS PRESENTACIÓN PPT (PAUTA DOCENTE) */
         .ppt-container { flex-grow: 1; padding: 20px 40px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow-y: auto;}
         .ppt-slide { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; animation: fadeIn 0.4s; }
         .ppt-slide.active { display: flex; }
@@ -140,8 +140,8 @@
         
         .ficha-tecnica { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #ecf0f1; padding-bottom: 15px;}
         .ficha-tecnica:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
-        .ficha-img { flex: 0 0 250px; text-align: center; background-color: #f8f9fa; border: 1px solid #bdc3c7; border-radius: 6px; padding: 10px; height: 120px; display: flex; align-items: center; justify-content: center;}
-        .ficha-img svg { max-width: 100%; max-height: 100%; }
+        .ficha-img { flex: 0 0 250px; text-align: center; background-color: #f8f9fa; border: 1px solid #bdc3c7; border-radius: 6px; padding: 10px; height: 200px; display: flex; align-items: center; justify-content: center;}
+        .ficha-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .ficha-datos { flex: 1; }
         .ficha-datos h3 { margin: 0 0 10px 0; color: #d35400; font-size: 18px;}
         .ficha-datos p { margin: 5px 0; font-size: 14px;}
@@ -174,11 +174,11 @@
         </div>
         
         <div class="main-tabs">
-            <button class="tab-btn active" id="btn-tab-scada" onclick="switchTab('scada')">⚙️ SIMULADOR SCADA</button>
-            <button class="tab-btn" id="btn-tab-ppt" onclick="switchTab('ppt')">📊 PRESENTACIÓN IPCHILE</button>
+            <button class="tab-btn" id="btn-tab-scada" onclick="switchTab('scada')">⚙️ SIMULADOR SCADA</button>
+            <button class="tab-btn active" id="btn-tab-ppt" onclick="switchTab('ppt')">📊 PRESENTACIÓN IPCHILE</button>
         </div>
 
-        <div class="led-grid" id="status-grid">
+        <div class="led-grid" id="status-grid" style="display: none;">
             <div class="led-row"><div class="led on" id="led-bomba"></div> MOTOR (M-01)</div>
             <div class="led-row"><div class="led" id="led-y1"></div> VÁLVULA Y1</div>
             <div class="led-row"><div class="led on" id="led-ls"></div> NIVEL ACEITE</div>
@@ -190,8 +190,9 @@
 
     <!-- ========================================== -->
     <!-- VISTA 1: PRESENTACIÓN ACADÉMICA (PPTX)     -->
+    <!-- CON RUTAS ACTUALIZADAS PARA GITHUB         -->
     <!-- ========================================== -->
-    <div id="vista-presentacion">
+    <div id="vista-presentacion" style="display: flex;">
         <div class="ppt-container">
             
             <div class="ppt-slide active" id="slide-1">
@@ -229,45 +230,26 @@
                 <div class="ppt-content" style="padding: 15px;">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <svg viewBox="0 0 200 100">
-                                <rect x="20" y="40" width="160" height="20" fill="#bdc3c7" stroke="#34495e" stroke-width="2"/>
-                                <rect x="80" y="30" width="40" height="40" fill="#e74c3c" rx="4"/>
-                                <circle cx="100" cy="50" r="5" fill="#f1c40f"/>
-                                <line x1="30" y1="50" x2="170" y2="50" stroke="#7f8c8d" stroke-dasharray="2,2"/>
-                                <text x="100" y="20" font-family="Arial" font-size="12" font-weight="bold" fill="#2c3e50" text-anchor="middle">ENCODER LINEAL</text>
-                            </svg>
+                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
+                            <img src="foto-sensor-optico.png" alt="Foto Sensor Óptico" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">ZT-101</span> Regla Óptica (Encoder Lineal GIVI)</h3>
                             <p><strong>Propósito:</strong> Medir la posición exacta (Eje Y) de los cilindros de la trancha para mantener paralelismo.</p>
                             <p><strong>Principio de funcionamiento:</strong> Transductor óptico que lee un cristal milimetrado generando pulsos (Resolución 0.005mm). Permite el control en Lazo Cerrado (PID).</p>
+                            <p><strong>Falla y Protección:</strong> Si falla, el PLC detecta asimetría en los cilindros y bloquea inmediatamente el descenso para evitar deformación mecánica.</p>
                         </div>
                     </div>
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <svg viewBox="0 0 200 100">
-                                <path d="M40,30 L40,90 L160,90 L160,30" fill="none" stroke="#34495e" stroke-width="4"/>
-                                <rect x="42" y="50" width="116" height="38" fill="#3498db" opacity="0.5"/>
-                                <rect x="60" y="10" width="10" height="60" fill="#95a5a6"/>
-                                <circle cx="65" cy="75" r="8" fill="#e74c3c"/>
-                                <text x="65" y="25" font-size="10" font-family="Arial" font-weight="bold" fill="#fff" text-anchor="middle">TT</text>
-                                <line x1="130" y1="10" x2="130" y2="70" stroke="#95a5a6" stroke-width="4"/>
-                                <rect x="115" y="45" width="30" height="15" fill="#f1c40f" rx="4"/>
-                                <text x="130" y="25" font-size="10" font-family="Arial" font-weight="bold" fill="#fff" text-anchor="middle">LS</text>
-                            </svg>
+                            <!-- IMAGEN ACTUALIZADA (AHORA APUNTA A LA IMAGEN COMBINADA) -->
+                            <img src="foto-motobomba-sensor-tanque.png" alt="Foto Sensores Tanque" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">TT-101 / LS-101</span> Sensores de Tanque (Temperatura y Nivel)</h3>
                             <p><strong>Propósito:</strong> Monitorear el estado del fluido hidráulico (Aceite HV-46).</p>
                             <p><strong>Principio físico:</strong> El TT-101 usa una resistencia PT100 que varía según el calor. El LS-101 usa un flotador magnético.</p>
-                        </div>
-                    </div>
-                    <!-- Nueva Ficha Inductivos -->
-                    <div class="ficha-tecnica">
-                        <div class="ficha-datos">
-                            <h3><span class="tag">IA1 / IB1 / IC1 / ITX</span> Sensores Inductivos (PNP)</h3>
-                            <p><strong>Propósito:</strong> Detectar la posición final de válvulas direccionales y el tope trasero X.</p>
-                            <p><strong>Principio físico:</strong> Generan un campo electromagnético de alta frecuencia; cuando el carrete metálico de la válvula se desplaza, altera el campo y el sensor envía una señal a 24VDC al PLC ESA.</p>
+                            <p><strong>Falla y Protección:</strong> Sobre $65^\circ C$ el aceite pierde viscosidad; bajo nivel causa cavitación. En ambos casos, el relé detiene el Motor (M-01).</p>
                         </div>
                     </div>
                 </div>
@@ -278,39 +260,25 @@
                 <div class="ppt-content" style="padding: 15px;">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <svg viewBox="0 0 200 100">
-                                <rect x="40" y="20" width="120" height="60" fill="#bdc3c7" stroke="#34495e" stroke-width="3"/>
-                                <rect x="30" y="35" width="20" height="30" fill="#e67e22"/>
-                                <rect x="50" y="35" width="30" height="30" fill="#fff" stroke="#34495e" stroke-width="2"/>
-                                <path d="M55,60 L75,40 M55,40 L75,60" stroke="#34495e" stroke-width="1.5"/>
-                                <rect x="150" y="35" width="20" height="30" fill="#e67e22"/>
-                                <rect x="120" y="35" width="30" height="30" fill="#fff" stroke="#34495e" stroke-width="2"/>
-                                <path d="M125,60 L145,40 M125,40 L145,60" stroke="#34495e" stroke-width="1.5"/>
-                                <circle cx="100" cy="50" r="10" fill="#7f8c8d"/>
-                            </svg>
+                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
+                            <img src="foto-bloque-hidraulico.png" alt="Bloque Hidráulico Hoerbiger" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">TY-Y1 / EVE1</span> Válvulas Proporcionales Servoasistidas</h3>
-                            <p><strong>Propósito:</strong> Controlar caudal (EVD1) y presión (EVE1) del cilindro principal izquierdo a lo largo del recorrido.</p>
+                            <p><strong>Propósito:</strong> Controlar caudal y presión del cilindro principal izquierdo a lo largo del recorrido.</p>
                             <p><strong>Principio de funcionamiento:</strong> Solenoides reciben señal analógica del CNC que desplaza la corredera proporcionalmente (hasta 225 bar).</p>
                         </div>
                     </div>
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <svg viewBox="0 0 200 100">
-                                <rect x="40" y="30" width="60" height="40" fill="#34495e" rx="4"/>
-                                <line x1="50" y1="30" x2="50" y2="70" stroke="#ecf0f1" stroke-width="2"/>
-                                <line x1="70" y1="30" x2="70" y2="70" stroke="#ecf0f1" stroke-width="2"/>
-                                <line x1="90" y1="30" x2="90" y2="70" stroke="#ecf0f1" stroke-width="2"/>
-                                <circle cx="130" cy="50" r="25" fill="#bdc3c7" stroke="#34495e" stroke-width="3"/>
-                                <circle cx="130" cy="50" r="10" fill="#7f8c8d"/>
-                                <line x1="100" y1="50" x2="105" y2="50" stroke="#34495e" stroke-width="6"/>
-                            </svg>
+                            <!-- IMAGEN ACTUALIZADA (APUNTA A LA IMAGEN COMBINADA) -->
+                            <img src="foto-motobomba-sensor-tanque.png" alt="Motor y Bomba" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">M-01</span> Grupo Motobomba Trifásico</h3>
                             <p><strong>Propósito:</strong> Generar la presión hidráulica (Bomba 22 L/min).</p>
                             <p><strong>Datos Técnicos:</strong> Motor de inducción de 9.5kW (12 CV) a 1400 RPM.</p>
+                            <p><strong>Protección Eléctrica:</strong> Protegido por Guardamotor y Contactores (K1). Si hay sobrecarga, el relé térmico interrumpe el circuito de control.</p>
                         </div>
                     </div>
                 </div>
@@ -321,16 +289,8 @@
                 <div class="ppt-content" style="padding: 15px;">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <svg viewBox="0 0 200 100">
-                                <rect x="30" y="10" width="140" height="80" fill="#2980b9" rx="4"/>
-                                <line x1="30" y1="30" x2="170" y2="30" stroke="#fff" stroke-width="1" opacity="0.5"/>
-                                <line x1="30" y1="50" x2="170" y2="50" stroke="#fff" stroke-width="1" opacity="0.5"/>
-                                <line x1="30" y1="70" x2="170" y2="70" stroke="#fff" stroke-width="1" opacity="0.5"/>
-                                <line x1="70" y1="10" x2="70" y2="90" stroke="#fff" stroke-width="1" opacity="0.5"/>
-                                <line x1="130" y1="10" x2="130" y2="90" stroke="#fff" stroke-width="1" opacity="0.5"/>
-                                <rect x="50" y="40" width="40" height="30" fill="none" stroke="#fff" stroke-width="2"/>
-                                <circle cx="140" cy="40" r="15" fill="none" stroke="#fff" stroke-width="2"/>
-                            </svg>
+                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
+                            <img src="foto-plano.png" alt="Plano Eléctrico/Hidráulico" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3>Planos Fuerza, Control y P&ID</h3>
@@ -349,14 +309,8 @@
                 <div class="ppt-content" style="padding: 15px;">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <svg viewBox="0 0 200 100">
-                                <rect x="40" y="20" width="15" height="60" fill="#f1c40f" stroke="#34495e" stroke-width="2"/>
-                                <rect x="145" y="20" width="15" height="60" fill="#f1c40f" stroke="#34495e" stroke-width="2"/>
-                                <line x1="55" y1="40" x2="145" y2="40" stroke="#e74c3c" stroke-width="4" stroke-dasharray="10,5"/>
-                                <line x1="55" y1="60" x2="145" y2="60" stroke="#e74c3c" stroke-width="4" stroke-dasharray="10,5"/>
-                                <text x="47" y="15" font-family="Arial" font-size="10" font-weight="bold" fill="#34495e" text-anchor="middle">TX</text>
-                                <text x="152" y="15" font-family="Arial" font-size="10" font-weight="bold" fill="#34495e" text-anchor="middle">RX</text>
-                            </svg>
+                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
+                            <img src="foto-seguridad.png" alt="Cortina Láser AKAS" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3>Sistema de Seguridad Integrado</h3>
@@ -439,7 +393,6 @@
                 <div class="barra-bg"><div class="barra-fill" id="barra-presion"></div></div>
             </div>
             
-            <!-- NUEVO PANEL DE DIAGNÓSTICO PLC E/S (Según páginas 73-82) -->
             <div class="hmi-seccion">
                 <div class="hmi-titulo">DIAGNÓSTICO E/S PLC ESA S630</div>
                 <div class="led-grid" style="grid-template-columns: repeat(2, 1fr); gap: 2px;">
