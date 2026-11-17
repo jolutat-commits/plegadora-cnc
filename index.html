@@ -132,7 +132,6 @@
         .ppt-slide svg.logo-portada { max-height: 160px; margin-bottom: 25px; }
         .ppt-slide h1 { color: #2c3e50; font-size: 36px; margin-bottom: 5px; text-transform: uppercase;}
         
-        /* Aumento del ancho máximo para aprovechar la pantalla */
         .ppt-slide h2 { color: #e67e22; font-size: 28px; margin-bottom: 20px; border-bottom: 3px solid #34495e; padding-bottom: 10px; width: 100%; max-width: 1200px;}
         .ppt-content { font-size: 18px; color: #34495e; text-align: left; width: 100%; max-width: 1200px; line-height: 1.6; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         
@@ -141,18 +140,23 @@
         .ppt-content li { margin-bottom: 12px; }
         .ppt-content strong { color: #2980b9; }
         
-        /* FICHAS TÉCNICAS MÁS GRANDES */
+        /* FICHAS TÉCNICAS ESTÁNDAR (Para slides 3 y 4) */
         .ficha-tecnica { display: flex; gap: 30px; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #ecf0f1; padding-bottom: 20px;}
         .ficha-tecnica:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
-        
-        /* Incremento significativo del contenedor de la imagen */
         .ficha-img { flex: 0 0 450px; text-align: center; background-color: #f8f9fa; border: 2px solid #bdc3c7; border-radius: 6px; padding: 10px; height: 280px; display: flex; align-items: center; justify-content: center;}
         .ficha-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        
         .ficha-datos { flex: 1; }
         .ficha-datos h3 { margin: 0 0 12px 0; color: #d35400; font-size: 22px;}
         .ficha-datos p { margin: 8px 0; font-size: 16px;}
         .ficha-datos .tag { background: #2c3e50; color: #fff; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 14px; margin-right: 5px;}
+
+        /* FICHAS TÉCNICAS MAXIMIZADAS (Para Planos - Slide 5 y 6) */
+        .ficha-img-max { flex: 1; width: 100%; display: flex; justify-content: center; align-items: center; background: #f8f9fa; border: 2px solid #bdc3c7; border-radius: 6px; padding: 10px; margin-bottom: 15px; overflow: hidden;}
+        .ficha-img-max img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .ficha-datos-min { flex-shrink: 0; font-size: 15px; text-align: left;}
+        .ficha-datos-min h3 { font-size: 18px; margin: 0 0 5px 0; color: #d35400; text-align: center;}
+        .ficha-datos-min ul { margin: 5px 0 0 0; padding-left: 20px; }
+        .ficha-datos-min li { margin-bottom: 4px; }
 
         .ppt-controls { background: #34495e; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white;}
         .ppt-btn { background: #f1c40f; border: none; color: #2c3e50; font-weight: bold; font-size: 16px; padding: 10px 20px; border-radius: 4px; cursor: pointer; transition: 0.2s;}
@@ -172,6 +176,7 @@
             .main-tabs { justify-content: center; margin-top: 10px;}
             .ficha-tecnica { flex-direction: column; text-align: center; }
             .ficha-img { flex: auto; width: 100%; height: auto;}
+            .ficha-img-max { min-height: 250px;}
         }
     </style>
 </head>
@@ -204,6 +209,7 @@
     <div id="vista-presentacion" style="display: flex;">
         <div class="ppt-container">
             
+            <!-- Diapositiva 1 -->
             <div class="ppt-slide active" id="slide-1">
                 <svg viewBox="0 0 400 120" class="logo-portada">
                     <rect width="400" height="120" fill="#005b9f" rx="8"/>
@@ -221,6 +227,7 @@
                 </div>
             </div>
 
+            <!-- Diapositiva 2 -->
             <div class="ppt-slide" id="slide-2">
                 <h2>Propósito y Objetivos</h2>
                 <div class="ppt-content">
@@ -234,12 +241,13 @@
                 </div>
             </div>
 
+            <!-- Diapositiva 3 -->
             <div class="ppt-slide" id="slide-3">
                 <h2>Inventario de Sensores (Fichas Técnicas)</h2>
-                <div class="ppt-content">
+                <div class="ppt-content" style="padding: 15px;">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <img src="foto-sensor-optico.png" alt="Foto Sensor Óptico">
+                            <img src="foto-sensor-optico.png" alt="Foto Sensor Óptico" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">ZT-101</span> Regla Óptica (Encoder Lineal GIVI)</h3>
@@ -250,7 +258,7 @@
                     </div>
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <img src="foto-motobomba-sensor-tanque.png" alt="Foto Sensores Tanque">
+                            <img src="foto-motobomba-sensor-tanque.png" alt="Foto Sensores Tanque" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">TT-101 / LS-101</span> Sensores de Tanque (Temperatura y Nivel)</h3>
@@ -262,12 +270,13 @@
                 </div>
             </div>
 
+            <!-- Diapositiva 4 -->
             <div class="ppt-slide" id="slide-4">
                 <h2>Inventario de Actuadores (Fichas Técnicas)</h2>
-                <div class="ppt-content">
+                <div class="ppt-content" style="padding: 15px;">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <img src="foto-bloque-hidraulico.png" alt="Bloque Hidráulico Hoerbiger">
+                            <img src="foto-bloque-hidraulico.png" alt="Bloque Hidráulico Hoerbiger" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">TY-Y1 / EVE1</span> Válvulas Proporcionales Servoasistidas</h3>
@@ -277,7 +286,7 @@
                     </div>
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <img src="foto-motobomba-sensor-tanque.png" alt="Motor y Bomba">
+                            <img src="foto-motobomba-sensor-tanque.png" alt="Motor y Bomba" onerror="this.style.display='none'">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">M-01</span> Grupo Motobomba Trifásico</h3>
@@ -289,42 +298,59 @@
                 </div>
             </div>
 
+            <!-- Diapositiva 5 (IMAGEN MAXIMIZADA) -->
             <div class="ppt-slide" id="slide-5">
                 <h2>Interpretación de Planos del Equipo</h2>
-                <div class="ppt-content">
-                    <div class="ficha-tecnica">
-                        <div class="ficha-img">
-                            <img src="foto-plano.png" alt="Plano Eléctrico/Hidráulico">
-                        </div>
-                        <div class="ficha-datos">
-                            <h3>Planos Fuerza, Control y P&ID</h3>
-                            <ul>
-                                <li><strong>Fuerza:</strong> Tablero a 400V con protecciones termomagnéticas (-PIA1) para el Motor M1 y los drivers (-FA1). Contactor de Bomba K1.</li>
-                                <li><strong>Control (E/S):</strong> Controlador ESA S630 a 24VDC que lee pedales (-SF4, -SF5) e inductivos (-IE1, -IA1, -IB1, -IC1, -ITX).</li>
-                                <li><strong>Neumático/Hidráulico:</strong> Diagrama de circuito hacia manifold AMB (Válvulas EVA1, EVB1, EVB2, EVC1).</li>
-                            </ul>
-                        </div>
+                <div class="ppt-content" style="padding: 15px; display: flex; flex-direction: column; height: 75vh;">
+                    <div class="ficha-img-max">
+                        <img src="foto-plano.png" alt="Plano Eléctrico/Hidráulico" onerror="this.style.display='none'">
+                    </div>
+                    <div class="ficha-datos-min">
+                        <h3>Planos Fuerza, Control y P&ID</h3>
+                        <ul>
+                            <li><strong>Fuerza:</strong> Tablero a 400V con protecciones termomagnéticas (-PIA1) para el Motor M1 y los drivers (-FA1). Contactor de Bomba K1.</li>
+                            <li><strong>Control (E/S):</strong> Controlador ESA S630 a 24VDC que lee pedales (-SF4, -SF5) e inductivos (-IE1, -IA1, -IB1, -IC1, -ITX).</li>
+                            <li><strong>Neumático/Hidráulico:</strong> Diagrama de circuito hacia manifold AMB (Válvulas EVA1, EVB1, EVB2, EVC1).</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
+            <!-- Diapositiva 6 (IMAGEN MAXIMIZADA) -->
             <div class="ppt-slide" id="slide-6">
                 <h2>Seguridad, Protecciones y Enclavamientos</h2>
-                <div class="ppt-content">
-                    <div class="ficha-tecnica">
-                        <div class="ficha-img">
-                            <img src="foto-seguridad.png" alt="Cortina Láser AKAS">
-                        </div>
-                        <div class="ficha-datos">
-                            <h3>Sistema de Seguridad Integrado</h3>
-                            <ul>
-                                <li><strong>Cortina Láser (AOPD) Fiessler AKAS:</strong> Diodo transmisor (TX) y receptor (RX). Si se cruza el haz, el relé de seguridad (-SEG2) corta las válvulas.</li>
-                                <li><strong>Bisagras de Seguridad (-SF9, -SF10):</strong> Enclavamientos de puertas laterales que cortan el circuito.</li>
-                                <li><strong>Parada de Emergencia (E-STOP -SF2):</strong> Pulsador que abre el circuito de fuerza.</li>
-                                <li><strong>Válvula Limitadora de Presión:</strong> Bypass mecánico de protección en el bloque manifold que retorna el aceite al tanque si la presión excede la capacidad.</li>
-                            </ul>
-                        </div>
+                <div class="ppt-content" style="padding: 15px; display: flex; flex-direction: column; height: 75vh;">
+                    <div class="ficha-img-max">
+                        <img src="foto-seguridad.png" alt="Cortina Láser AKAS" onerror="this.style.display='none'">
                     </div>
+                    <div class="ficha-datos-min">
+                        <h3>Sistema de Seguridad Integrado</h3>
+                        <ul>
+                            <li><strong>Cortina Láser (AOPD) Fiessler AKAS:</strong> Diodo transmisor (TX) y receptor (RX). Si se cruza el haz, el relé de seguridad (-SEG2) corta las válvulas.</li>
+                            <li><strong>Bisagras de Seguridad (-SF9, -SF10):</strong> Enclavamientos de puertas laterales que cortan el circuito.</li>
+                            <li><strong>Parada de Emergencia (E-STOP -SF2):</strong> Pulsador que abre el circuito de fuerza.</li>
+                            <li><strong>Válvula Limitadora de Presión:</strong> Bypass mecánico de protección en el bloque manifold que retorna el aceite al tanque si la presión excede la capacidad.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diapositiva 7: CIERRE Y CONCLUSIÓN -->
+            <div class="ppt-slide" id="slide-7">
+                <svg viewBox="0 0 400 120" style="max-height: 100px; margin-bottom: 25px;">
+                    <rect width="400" height="120" fill="#005b9f" rx="8"/>
+                    <text x="200" y="70" fill="#ffffff" font-family="Arial, sans-serif" font-weight="900" font-size="60" text-anchor="middle" letter-spacing="2">IPCHILE</text>
+                    <text x="200" y="100" fill="#ffffff" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" letter-spacing="1">INSTITUTO PROFESIONAL DE CHILE</text>
+                </svg>
+                <h1>Levantamiento Finalizado</h1>
+                <h2>Conclusiones del Proyecto</h2>
+                <div class="ppt-content center">
+                    <p>Este trabajo nos permitió relacionar de manera directa los esquemas y planos teóricos con los componentes físicos instalados en la maquinaria industrial Nargesa.</p>
+                    <br>
+                    <p>El desarrollo y la integración del <strong>Gemelo Digital SCADA</strong> demuestra nuestra comprensión integral del sistema: desde el momento en que un sensor emite una señal de medición, el controlador PLC procesa la lógica, y el actuador hidráulico ejecuta el movimiento exacto bajo condiciones seguras.</p>
+                    <br><br>
+                    <h3 style="color: #27ae60; font-size: 28px;">¡Muchas gracias por su atención!</h3>
+                    <p style="font-size: 14px; color: #7f8c8d; margin-top: 15px;">Fin de la presentación.</p>
                 </div>
             </div>
 
@@ -332,7 +358,7 @@
 
         <div class="ppt-controls">
             <button class="ppt-btn" onclick="prevSlide()">◀ Anterior</button>
-            <span class="ppt-counter"><span id="current-slide-num">1</span> / 6</span>
+            <span class="ppt-counter"><span id="current-slide-num">1</span> / 7</span>
             <button class="ppt-btn" onclick="nextSlide()">Siguiente ▶</button>
         </div>
     </div>
@@ -622,7 +648,7 @@
         }
 
         let currentSlide = 1;
-        const totalSlides = 6;
+        const totalSlides = 7;
         function showSlide(n) {
             for(let i=1; i<=totalSlides; i++) { document.getElementById('slide-'+i).classList.remove('active'); }
             document.getElementById('slide-'+n).classList.add('active');
