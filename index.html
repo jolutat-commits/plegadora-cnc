@@ -3,207 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard SCADA - Plegadora Nargesa MP3003CNC</title>
+    <title>Gemelo Digital & Presentación - Nargesa MP3003CNC</title>
     
     <meta name="theme-color" content="#2c3e50">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,{
-        %22name%22: %22SCADA Nargesa MP3003CNC%22,
-        %22short_name%22: %22Nargesa SCADA%22,
-        %22start_url%22: %22.%22,
-        %22display%22: %22standalone%22,
-        %22background_color%22: %22%231e272e%22,
-        %22theme_color%22: %22%232c3e50%22,
-        %22icons%22: [
-            {
-                %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%232c3e50'/%3E%3Cpath d='M150 180h212v150H150z' fill='%2334495e' stroke='%23f1c40f' stroke-width='12'/%3E%3Ccircle cx='256' cy='256' r='60' fill='%2327ae60'/%3E%3Cpath d='M100 380h312v40H100z' fill='%23e74c3c'/%3E%3C/svg%3E%22,
-                %22sizes%22: %22512x512%22,
-                %22type%22: %22image/svg+xml%22,
-                %22purpose%22: %22any maskable%22
-            }
-        ]
-    }">
-
+    
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e272e;
-            margin: 0;
-            padding: 10px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            background-color: #1e272e; margin: 0; padding: 10px; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 10px; height: 100vh; overflow: hidden;
         }
 
         .top-bar {
-            background-color: #2c3e50;
-            border: 2px solid #576574;
-            border-radius: 6px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            gap: 10px;
-            flex-wrap: wrap;
+            background-color: #2c3e50; border: 2px solid #576574; border-radius: 6px;
+            flex-shrink: 0; display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+            padding: 8px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); gap: 10px;
         }
-
         .brand h2 { margin: 0; color: #fff; font-size: 15px; letter-spacing: 0.5px; }
         .brand span { color: #f1c40f; font-size: 10px; font-weight: bold; }
 
-        .led-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px 12px;
-            background-color: #34495e;
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: 1px solid #7f8c8d;
+        .main-tabs { display: flex; gap: 10px; }
+        .tab-btn {
+            background-color: #34495e; border: 2px solid #7f8c8d; color: #fff; font-weight: bold;
+            padding: 8px 15px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-size: 12px;
         }
+        .tab-btn.active { background-color: #27ae60; border-color: #2ecc71; box-shadow: 0 0 10px rgba(46,204,113,0.5); }
+        .tab-btn:hover:not(.active) { background-color: #3b536b; }
 
+        .led-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 12px;
+            background-color: #34495e; padding: 6px 12px; border-radius: 4px; border: 1px solid #7f8c8d;
+        }
         .led-row { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: bold; color: #bdc3c7;}
         .led { width: 10px; height: 10px; border-radius: 50%; background-color: #7f8c8d; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
-        .led.on { background-color: #2ecc71; box-shadow: 0 0 6px #2ecc71, inset 0 1px 2px rgba(0,0,0,0.2); }
+        .led.on { background-color: #2ecc71; box-shadow: 0 0 6px #2ecc71; }
         .led.error { background-color: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
 
-        .consola {
-            background-color: #000; color: #0f0; font-family: 'Courier New', Courier, monospace;
-            font-size: 10px; height: 50px; width: 100%; max-width: 320px; overflow-y: auto; padding: 4px; 
-            border: 2px inset #555; border-radius: 4px; line-height: 1.2;
-        }
-
-        .layout-principal {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-        }
+        .layout-principal { display: flex; flex-direction: row; gap: 10px; flex-grow: 1; overflow: hidden; }
+        #vista-presentacion { flex-grow: 1; background-color: #ecf0f1; border-radius: 6px; border: 2px solid #bdc3c7; display: flex; flex-direction: column; overflow: hidden;}
 
         .sidebar {
-            width: 300px; 
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px; 
-            background-color: #2c3e50;
-            border: 2px solid #576574;
-            border-radius: 6px;
-            padding: 10px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            width: 310px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; 
+            background-color: #2c3e50; border: 2px solid #576574; border-radius: 6px; padding: 10px; overflow-y: auto;
         }
-
-        .hmi-seccion {
-            background-color: #34495e; padding: 10px; border-radius: 4px;
-            display: flex; flex-direction: column; gap: 6px; border: 1px solid #7f8c8d;
-        }
-        .hmi-titulo {
-            color: #f1c40f; font-size: 10px; font-weight: bold; text-transform: uppercase;
-            border-bottom: 1px solid #7f8c8d; padding-bottom: 3px; margin-bottom: 2px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .pantalla-digital {
-            background-color: #000; color: #2ecc71; font-family: 'Courier New', Courier, monospace;
-            padding: 3px 6px; border-radius: 4px; font-size: 15px; font-weight: bold;
-            border: 2px inset #555; text-align: right; box-shadow: inset 0 0 8px rgba(46, 204, 113, 0.2);
-        }
+        .hmi-seccion { background-color: #34495e; padding: 8px; border-radius: 4px; display: flex; flex-direction: column; gap: 6px; border: 1px solid #7f8c8d; }
+        .hmi-titulo { color: #f1c40f; font-size: 10px; font-weight: bold; display: flex; justify-content: space-between; border-bottom: 1px solid #7f8c8d; padding-bottom: 3px; }
+        .form-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #ecf0f1;}
+        input[type="text"], select { padding: 2px; font-size: 12px; border-radius: 3px; border: none; width: 100px; font-weight: bold; background-color: #ecf0f1; text-align: right; }
+        
+        .pantalla-digital { background-color: #000; color: #2ecc71; font-family: 'Courier New', monospace; padding: 3px 6px; border-radius: 4px; font-size: 15px; font-weight: bold; text-align: right; border: 2px inset #555; }
         .alerta { color: #e74c3c !important; text-shadow: 0 0 4px #e74c3c; animation: parpadeo 0.8s infinite; }
         .hold { color: #f1c40f !important; }
         .cool { color: #3498db !important; }
-        @keyframes parpadeo { 50% { opacity: 0.3; } }
-
-        .form-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; color: #ecf0f1;}
-        input[type="text"], select {
-            padding: 3px; font-size: 12px; border-radius: 3px; border: none;
-            width: 110px; font-weight: bold; background-color: #ecf0f1; text-align: right;
-        }
 
         .btn-group { display: flex; gap: 5px; margin-top: 2px; }
-        button { border: none; padding: 6px; font-size: 10px; font-weight: bold; border-radius: 3px; cursor: pointer; transition: 0.1s; flex: 1; color: white;}
-        button:active { transform: translateY(1px); }
+        button.ctrl-btn { border: none; padding: 6px; font-size: 10px; font-weight: bold; border-radius: 3px; cursor: pointer; flex: 1; color: white; transition: 0.1s; }
+        button.ctrl-btn:active { transform: translateY(1px); }
         .btn-start { background-color: #27ae60; border-bottom: 3px solid #1e8449; }
         .btn-stop { background-color: #c0392b; border-bottom: 3px solid #922b21; }
         .btn-reset { background-color: #2980b9; border-bottom: 3px solid #1f618d; }
-        .btn-laser { background-color: #d35400; border-bottom: 3px solid #a04000; width: 100%; margin-top: 2px; }
-        .btn-fuga { background-color: #8e44ad; border-bottom: 3px solid #5b2c6f; width: 100%; margin-top: 2px; }
-        .btn-teach { background-color: #8e44ad; border-bottom: 3px solid #5b2c6f; width: 100%; }
+        .btn-laser { background-color: #d35400; border-bottom: 3px solid #a04000; }
+        .btn-fuga { background-color: #8e44ad; border-bottom: 3px solid #5b2c6f; }
+        .btn-teach { background-color: #8e44ad; }
 
-        .teach-container {
-            background-color: #111;
-            border: 2px inset #555;
-            border-radius: 4px;
-            position: relative;
-            height: 100px;
-            cursor: crosshair;
-        }
+        .teach-container { background-color: #0c1218; border: 2px inset #555; border-radius: 4px; height: 120px; cursor: crosshair; background-image: linear-gradient(rgba(41,128,185,0.25) 1px, transparent 1px), linear-gradient(90deg, rgba(41,128,185,0.25) 1px, transparent 1px); background-size: 10px 10px; }
         #canvas-teach { width: 100%; height: 100%; display: block; }
 
-        .barra-bg { background-color: #000; width: 100%; height: 8px; border-radius: 2px; overflow: hidden; border: 1px solid #7f8c8d; margin-top: 2px;}
+        .barra-bg { background-color: #000; width: 100%; height: 8px; border-radius: 2px; border: 1px solid #7f8c8d; margin-top: 2px;}
         .barra-fill { background-color: #3498db; width: 5%; height: 100%; transition: width 0.2s, background-color 0.2s; }
         .barra-fill.full { background-color: #e67e22; }
 
-        .contenedor-plano { 
-            flex-grow: 1; 
-            background-color: white; 
-            border: 2px solid #bdc3c7; 
-            border-radius: 6px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            min-height: 550px; /* Altura de seguridad para que el SVG no colapse */
-            width: 100%;
-        }
-        
-        .contenedor-plano svg { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
+        .consola {
+            background-color: #000; color: #0f0; font-family: 'Courier New', monospace; font-size: 10px; 
+            height: 40px; width: 100%; overflow-y: auto; padding: 4px; border: 2px inset #555; border-radius: 4px;
         }
 
-        .valvula { transition: fill 0.1s; }
-        .valvula-activa { fill: #d5f5e3; stroke: #27ae60 !important; }
-        .bomba-activa { fill: #f9e79f; }
-        .linea-presion { transition: stroke 0.1s; }
-        .linea-activa { stroke: #27ae60 !important; }
-        .texto-tag { font-size: 12px; font-weight: bold; font-family: Arial; fill: #2c3e50; }
-        .texto-tabla { font-size: 11px; font-family: Arial; fill: #34495e; }
-        .haz-laser { stroke: #e74c3c; stroke-width: 3; stroke-dasharray: 10,5; opacity: 0.8; transition: opacity 0.2s; }
-        .haz-laser.roto { opacity: 0.2; stroke: #c0392b; animation: parpadeo 0.2s infinite; }
-        .eje-x { transition: transform 0.5s ease-out; }
+        .columna-derecha { flex-grow: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+        .monitores-superiores { display: flex; gap: 10px; height: 180px; flex-shrink: 0; }
         
+        .panel-camara { flex: 1; background-color: #111; border: 2px solid #576574; border-radius: 6px; box-shadow: inset 0 0 20px rgba(0,0,0,1); position: relative; background-image: linear-gradient(rgba(44,62,80,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(44,62,80,0.4) 1px, transparent 1px); background-size: 20px 20px; overflow: hidden;}
+        .overlay-camara { position: absolute; top: 10px; left: 15px; color: #2ecc71; font-family: 'Courier New', monospace; font-size: 10px; font-weight: bold; }
+        .overlay-titulo-cad { color: #3498db; }
+        .overlay-angulo { position: absolute; top: 10px; right: 15px; color: #f1c40f; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; }
+        .marcador-pulso { fill: #e74c3c; animation: pulso 1s infinite; }
+        @keyframes pulso { 0%, 100% { r: 3; opacity: 1; } 50% { r: 8; opacity: 0.5; } }
+
+        .contenedor-plano { flex-grow: 1; background-color: white; border: 2px solid #bdc3c7; border-radius: 6px; display: flex; align-items: center; justify-content: center; min-height: 400px; width: 100%; position: relative; }
+        .contenedor-plano svg { width: 100%; height: 100%; object-fit: contain; }
+
         .cilindro-cuerpo { transition: fill 0.2s, stroke 0.2s; }
         .cilindro-activo { fill: #d5f5e3 !important; stroke: #27ae60 !important; }
         .cilindro-prensando { fill: #f9e79f !important; stroke: #d35400 !important; }
-        .servo-activo { fill: #f39c12 !important; }
-        .crowning-activo { transform: translateY(-4px); fill: #e67e22 !important; }
+        .eje-x { transition: transform 0.5s ease-out; }
+        .servo-activo { fill: #f39c12 !important; filter: drop-shadow(0 0 5px #e67e22); }
+        .crowning-activo { transform: translateY(-4px); fill: #e67e22 !important; filter: drop-shadow(0 0 6px #d35400); }
+        .valvula { transition: fill 0.1s; }
+        .valvula-activa { fill: #d5f5e3; stroke: #27ae60 !important; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .motor-run { animation: spin 0.2s linear infinite; transform-origin: 150px 620px; }
+        .motor-base-run { fill: #f9e79f !important; stroke: #e67e22 !important; }
+        @keyframes flow { to { stroke-dashoffset: -20; } }
+        .linea-activa { stroke: #27ae60 !important; stroke-dasharray: 8, 4; animation: flow 0.4s linear infinite; }
+        .haz-laser { stroke: #e74c3c; stroke-width: 3; stroke-dasharray: 10,5; opacity: 0.8; transition: opacity 0.2s; }
+        .haz-laser.roto { opacity: 0.2; stroke: #c0392b; animation: parpadeo 0.2s infinite; }
+        @keyframes parpadeo { 50% { opacity: 0.3; } }
 
-        /* DISEÑO ADAPTABLE (RESPONSIVE) PARA CELULARES Y ZOOM EXTREMO */
+        .hud-box {
+            background-color: rgba(44, 62, 80, 0.95); border-left: 5px solid #7f8c8d; border-radius: 4px;
+            padding: 6px; color: #ecf0f1; font-family: Arial, sans-serif; font-size: 11px;
+            line-height: 1.3; box-shadow: 0 4px 8px rgba(0,0,0,0.4); transition: all 0.3s ease;
+        }
+        .hud-title { font-weight: bold; color: #f1c40f; display: block; margin-bottom: 3px; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px;}
+        .hud-activo { background-color: rgba(39, 174, 96, 0.95); border-left-color: #2ecc71; color: #fff; }
+        .hud-activo .hud-title { color: #fff; border-bottom-color: rgba(255,255,255,0.5); }
+        .hud-aviso { background-color: #f39c12; border-left-color: #d35400; color: #000; font-weight: 600;}
+        .hud-aviso .hud-title { color: #000; border-bottom-color: rgba(0,0,0,0.4); font-weight: 900;}
+        .hud-alerta { background-color: rgba(231, 76, 60, 0.95); border-left-color: #c0392b; color: #fff; }
+        .hud-alerta .hud-title { color: #f1c40f; border-bottom-color: rgba(255,255,255,0.5); }
+
+        /* ESTILOS PRESENTACIÓN PPT */
+        .ppt-container { flex-grow: 1; padding: 20px 40px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow-y: auto;}
+        .ppt-slide { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; animation: fadeIn 0.4s; }
+        .ppt-slide.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .ppt-slide svg.logo-portada { max-height: 140px; margin-bottom: 20px; }
+        .ppt-slide h1 { color: #2c3e50; font-size: 32px; margin-bottom: 5px; text-transform: uppercase;}
+        .ppt-slide h2 { color: #e67e22; font-size: 24px; margin-bottom: 20px; border-bottom: 3px solid #34495e; padding-bottom: 10px; width: 100%; max-width: 900px;}
+        .ppt-content { font-size: 16px; color: #34495e; text-align: left; width: 100%; max-width: 900px; line-height: 1.6; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .ppt-content.center { text-align: center; }
+        .ppt-content ul { padding-left: 20px; margin-top: 10px;}
+        .ppt-content li { margin-bottom: 10px; }
+        .ppt-content strong { color: #2980b9; }
+        
+        .ficha-tecnica { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #ecf0f1; padding-bottom: 15px;}
+        .ficha-tecnica:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .ficha-img { flex: 0 0 250px; text-align: center; background-color: #f8f9fa; border: 1px solid #bdc3c7; border-radius: 6px; padding: 10px; height: 120px; display: flex; align-items: center; justify-content: center;}
+        .ficha-img svg { max-width: 100%; max-height: 100%; }
+        .ficha-datos { flex: 1; }
+        .ficha-datos h3 { margin: 0 0 10px 0; color: #d35400; font-size: 18px;}
+        .ficha-datos p { margin: 5px 0; font-size: 14px;}
+        .ficha-datos .tag { background: #2c3e50; color: #fff; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; margin-right: 5px;}
+
+        .ppt-controls { background: #34495e; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white;}
+        .ppt-btn { background: #f1c40f; border: none; color: #2c3e50; font-weight: bold; font-size: 16px; padding: 10px 20px; border-radius: 4px; cursor: pointer; transition: 0.2s;}
+        .ppt-btn:hover { background: #f39c12; }
+        .ppt-counter { font-family: monospace; font-size: 16px; }
+
         @media (max-width: 900px) {
-            body {
-                height: auto;
-                overflow: auto;
-            }
-            .layout-principal {
-                flex-direction: column; 
-            }
-            .sidebar {
-                width: 100%;
-            }
-            .top-bar {
-                height: auto;
-                padding: 10px;
-            }
-            .consola {
-                width: 100%;
-            }
-            .contenedor-plano {
-                height: 480px; /* Altura fija óptima para celulares */
-            }
+            body { height: auto; overflow: auto; }
+            .layout-principal { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .monitores-superiores { flex-direction: column; height: 360px; } 
+            .contenedor-plano { height: 480px; }
+            .top-bar { flex-direction: column; align-items: stretch; }
+            .main-tabs { justify-content: center; margin-top: 10px;}
+            .ficha-tecnica { flex-direction: column; text-align: center; }
+            .ficha-img { flex: auto; width: 100%; height: auto;}
         }
     </style>
 </head>
@@ -212,304 +170,532 @@
     <div class="top-bar">
         <div class="brand">
             <h2>NARGESA MP3003CNC</h2>
-            <span>SISTEMA SCADA P&ID INDUSTRIAL (FEEDBACK ACTIVO)</span>
+            <span>GEMELO DIGITAL & PRESENTACIÓN OFICIAL</span>
         </div>
         
-        <div class="led-grid">
+        <div class="main-tabs">
+            <button class="tab-btn active" id="btn-tab-scada" onclick="switchTab('scada')">⚙️ SIMULADOR SCADA</button>
+            <button class="tab-btn" id="btn-tab-ppt" onclick="switchTab('ppt')">📊 PRESENTACIÓN IPCHILE</button>
+        </div>
+
+        <div class="led-grid" id="status-grid">
             <div class="led-row"><div class="led on" id="led-bomba"></div> MOTOR (M-01)</div>
             <div class="led-row"><div class="led" id="led-y1"></div> VÁLVULA Y1</div>
             <div class="led-row"><div class="led on" id="led-ls"></div> NIVEL ACEITE</div>
-            
             <div class="led-row"><div class="led on" id="led-laser"></div> LÁSER AKAS</div>
             <div class="led-row"><div class="led" id="led-y2"></div> VÁLVULA Y2</div>
             <div class="led-row"><div class="led" id="led-alm"></div> ALARMA SYS</div>
         </div>
-
-        <div class="consola" id="consola-logs"></div>
     </div>
 
-    <div class="layout-principal">
-
-        <div class="sidebar">
+    <!-- ========================================== -->
+    <!-- VISTA 1: PRESENTACIÓN ACADÉMICA (PPTX)     -->
+    <!-- ========================================== -->
+    <div id="vista-presentacion">
+        <div class="ppt-container">
             
+            <div class="ppt-slide active" id="slide-1">
+                <svg viewBox="0 0 400 120" class="logo-portada">
+                    <rect width="400" height="120" fill="#005b9f" rx="8"/>
+                    <text x="200" y="70" fill="#ffffff" font-family="Arial, sans-serif" font-weight="900" font-size="60" text-anchor="middle" letter-spacing="2">IPCHILE</text>
+                    <text x="200" y="100" fill="#ffffff" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" letter-spacing="1">INSTITUTO PROFESIONAL DE CHILE</text>
+                </svg>
+                
+                <h1>Levantamiento Técnico de Equipo Industrial</h1>
+                <h2>Plegadora Hidráulica Nargesa MP3003CNC</h2>
+                <div class="ppt-content center">
+                    <p><strong>Desarrollo y Simulación de Gemelo Digital SCADA</strong></p>
+                    <br>
+                    <p><strong>Asignatura:</strong> Análisis sensores y actuadores</p>
+                    <p><strong>Integrantes:</strong> Axel Aros, Miguel Bustos, Jose Tapia</p>
+                </div>
+            </div>
+
+            <div class="ppt-slide" id="slide-2">
+                <h2>Propósito y Objetivos</h2>
+                <div class="ppt-content">
+                    <p>El presente trabajo busca inspeccionar, documentar y simular los componentes electromecánicos e hidráulicos de una máquina plegadora industrial, cumpliendo con la pauta de evaluación:</p>
+                    <ul>
+                        <li><strong>Identificar:</strong> Reconocer y ubicar los sensores y actuadores en los planos y en la máquina real.</li>
+                        <li><strong>Comprender:</strong> Explicar el principio físico de funcionamiento de cada componente (óptico, hidráulico, térmico).</li>
+                        <li><strong>Proteger:</strong> Analizar los interlocks de seguridad (Cortina láser, E-Stop, Alivio de presión).</li>
+                        <li><strong>Simular:</strong> Integrar esta telemetría en un Gemelo Digital (SCADA) desarrollado en HTML/JS.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ppt-slide" id="slide-3">
+                <h2>Inventario de Sensores (Fichas Técnicas)</h2>
+                <div class="ppt-content" style="padding: 15px;">
+                    <div class="ficha-tecnica">
+                        <div class="ficha-img">
+                            <svg viewBox="0 0 200 100">
+                                <rect x="20" y="40" width="160" height="20" fill="#bdc3c7" stroke="#34495e" stroke-width="2"/>
+                                <rect x="80" y="30" width="40" height="40" fill="#e74c3c" rx="4"/>
+                                <circle cx="100" cy="50" r="5" fill="#f1c40f"/>
+                                <line x1="30" y1="50" x2="170" y2="50" stroke="#7f8c8d" stroke-dasharray="2,2"/>
+                                <text x="100" y="20" font-family="Arial" font-size="12" font-weight="bold" fill="#2c3e50" text-anchor="middle">ENCODER LINEAL</text>
+                            </svg>
+                        </div>
+                        <div class="ficha-datos">
+                            <h3><span class="tag">ZT-101</span> Regla Óptica (Encoder Lineal GIVI)</h3>
+                            <p><strong>Propósito:</strong> Medir la posición exacta (Eje Y) de los cilindros de la trancha para mantener paralelismo.</p>
+                            <p><strong>Principio de funcionamiento:</strong> Transductor óptico que lee un cristal milimetrado generando pulsos (Resolución 0.005mm). Permite el control en Lazo Cerrado (PID).</p>
+                        </div>
+                    </div>
+                    <div class="ficha-tecnica">
+                        <div class="ficha-img">
+                            <svg viewBox="0 0 200 100">
+                                <path d="M40,30 L40,90 L160,90 L160,30" fill="none" stroke="#34495e" stroke-width="4"/>
+                                <rect x="42" y="50" width="116" height="38" fill="#3498db" opacity="0.5"/>
+                                <rect x="60" y="10" width="10" height="60" fill="#95a5a6"/>
+                                <circle cx="65" cy="75" r="8" fill="#e74c3c"/>
+                                <text x="65" y="25" font-size="10" font-family="Arial" font-weight="bold" fill="#fff" text-anchor="middle">TT</text>
+                                <line x1="130" y1="10" x2="130" y2="70" stroke="#95a5a6" stroke-width="4"/>
+                                <rect x="115" y="45" width="30" height="15" fill="#f1c40f" rx="4"/>
+                                <text x="130" y="25" font-size="10" font-family="Arial" font-weight="bold" fill="#fff" text-anchor="middle">LS</text>
+                            </svg>
+                        </div>
+                        <div class="ficha-datos">
+                            <h3><span class="tag">TT-101 / LS-101</span> Sensores de Tanque (Temperatura y Nivel)</h3>
+                            <p><strong>Propósito:</strong> Monitorear el estado del fluido hidráulico (Aceite HV-46).</p>
+                            <p><strong>Principio físico:</strong> El TT-101 usa una resistencia PT100 que varía según el calor. El LS-101 usa un flotador magnético.</p>
+                        </div>
+                    </div>
+                    <!-- Nueva Ficha Inductivos -->
+                    <div class="ficha-tecnica">
+                        <div class="ficha-datos">
+                            <h3><span class="tag">IA1 / IB1 / IC1 / ITX</span> Sensores Inductivos (PNP)</h3>
+                            <p><strong>Propósito:</strong> Detectar la posición final de válvulas direccionales y el tope trasero X.</p>
+                            <p><strong>Principio físico:</strong> Generan un campo electromagnético de alta frecuencia; cuando el carrete metálico de la válvula se desplaza, altera el campo y el sensor envía una señal a 24VDC al PLC ESA.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ppt-slide" id="slide-4">
+                <h2>Inventario de Actuadores (Fichas Técnicas)</h2>
+                <div class="ppt-content" style="padding: 15px;">
+                    <div class="ficha-tecnica">
+                        <div class="ficha-img">
+                            <svg viewBox="0 0 200 100">
+                                <rect x="40" y="20" width="120" height="60" fill="#bdc3c7" stroke="#34495e" stroke-width="3"/>
+                                <rect x="30" y="35" width="20" height="30" fill="#e67e22"/>
+                                <rect x="50" y="35" width="30" height="30" fill="#fff" stroke="#34495e" stroke-width="2"/>
+                                <path d="M55,60 L75,40 M55,40 L75,60" stroke="#34495e" stroke-width="1.5"/>
+                                <rect x="150" y="35" width="20" height="30" fill="#e67e22"/>
+                                <rect x="120" y="35" width="30" height="30" fill="#fff" stroke="#34495e" stroke-width="2"/>
+                                <path d="M125,60 L145,40 M125,40 L145,60" stroke="#34495e" stroke-width="1.5"/>
+                                <circle cx="100" cy="50" r="10" fill="#7f8c8d"/>
+                            </svg>
+                        </div>
+                        <div class="ficha-datos">
+                            <h3><span class="tag">TY-Y1 / EVE1</span> Válvulas Proporcionales Servoasistidas</h3>
+                            <p><strong>Propósito:</strong> Controlar caudal (EVD1) y presión (EVE1) del cilindro principal izquierdo a lo largo del recorrido.</p>
+                            <p><strong>Principio de funcionamiento:</strong> Solenoides reciben señal analógica del CNC que desplaza la corredera proporcionalmente (hasta 225 bar).</p>
+                        </div>
+                    </div>
+                    <div class="ficha-tecnica">
+                        <div class="ficha-img">
+                            <svg viewBox="0 0 200 100">
+                                <rect x="40" y="30" width="60" height="40" fill="#34495e" rx="4"/>
+                                <line x1="50" y1="30" x2="50" y2="70" stroke="#ecf0f1" stroke-width="2"/>
+                                <line x1="70" y1="30" x2="70" y2="70" stroke="#ecf0f1" stroke-width="2"/>
+                                <line x1="90" y1="30" x2="90" y2="70" stroke="#ecf0f1" stroke-width="2"/>
+                                <circle cx="130" cy="50" r="25" fill="#bdc3c7" stroke="#34495e" stroke-width="3"/>
+                                <circle cx="130" cy="50" r="10" fill="#7f8c8d"/>
+                                <line x1="100" y1="50" x2="105" y2="50" stroke="#34495e" stroke-width="6"/>
+                            </svg>
+                        </div>
+                        <div class="ficha-datos">
+                            <h3><span class="tag">M-01</span> Grupo Motobomba Trifásico</h3>
+                            <p><strong>Propósito:</strong> Generar la presión hidráulica (Bomba 22 L/min).</p>
+                            <p><strong>Datos Técnicos:</strong> Motor de inducción de 9.5kW (12 CV) a 1400 RPM.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ppt-slide" id="slide-5">
+                <h2>Interpretación de Planos del Equipo</h2>
+                <div class="ppt-content" style="padding: 15px;">
+                    <div class="ficha-tecnica">
+                        <div class="ficha-img">
+                            <svg viewBox="0 0 200 100">
+                                <rect x="30" y="10" width="140" height="80" fill="#2980b9" rx="4"/>
+                                <line x1="30" y1="30" x2="170" y2="30" stroke="#fff" stroke-width="1" opacity="0.5"/>
+                                <line x1="30" y1="50" x2="170" y2="50" stroke="#fff" stroke-width="1" opacity="0.5"/>
+                                <line x1="30" y1="70" x2="170" y2="70" stroke="#fff" stroke-width="1" opacity="0.5"/>
+                                <line x1="70" y1="10" x2="70" y2="90" stroke="#fff" stroke-width="1" opacity="0.5"/>
+                                <line x1="130" y1="10" x2="130" y2="90" stroke="#fff" stroke-width="1" opacity="0.5"/>
+                                <rect x="50" y="40" width="40" height="30" fill="none" stroke="#fff" stroke-width="2"/>
+                                <circle cx="140" cy="40" r="15" fill="none" stroke="#fff" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="ficha-datos">
+                            <h3>Planos Fuerza, Control y P&ID</h3>
+                            <ul>
+                                <li><strong>Fuerza:</strong> Tablero a 400V con protecciones termomagnéticas (-PIA1) para el Motor M1 y los drivers (-FA1). Contactor de Bomba K1.</li>
+                                <li><strong>Control (E/S):</strong> Controlador ESA S630 a 24VDC que lee pedales (-SF4, -SF5) e inductivos (-IE1, -IA1, -IB1, -IC1, -ITX).</li>
+                                <li><strong>Neumático/Hidráulico:</strong> Diagrama de circuito hacia manifold AMB (Válvulas EVA1, EVB1, EVB2, EVC1).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ppt-slide" id="slide-6">
+                <h2>Seguridad, Protecciones y Enclavamientos</h2>
+                <div class="ppt-content" style="padding: 15px;">
+                    <div class="ficha-tecnica">
+                        <div class="ficha-img">
+                            <svg viewBox="0 0 200 100">
+                                <rect x="40" y="20" width="15" height="60" fill="#f1c40f" stroke="#34495e" stroke-width="2"/>
+                                <rect x="145" y="20" width="15" height="60" fill="#f1c40f" stroke="#34495e" stroke-width="2"/>
+                                <line x1="55" y1="40" x2="145" y2="40" stroke="#e74c3c" stroke-width="4" stroke-dasharray="10,5"/>
+                                <line x1="55" y1="60" x2="145" y2="60" stroke="#e74c3c" stroke-width="4" stroke-dasharray="10,5"/>
+                                <text x="47" y="15" font-family="Arial" font-size="10" font-weight="bold" fill="#34495e" text-anchor="middle">TX</text>
+                                <text x="152" y="15" font-family="Arial" font-size="10" font-weight="bold" fill="#34495e" text-anchor="middle">RX</text>
+                            </svg>
+                        </div>
+                        <div class="ficha-datos">
+                            <h3>Sistema de Seguridad Integrado</h3>
+                            <ul>
+                                <li><strong>Cortina Láser (AOPD) Fiessler AKAS:</strong> Diodo transmisor (TX) y receptor (RX). Si se cruza el haz, el relé de seguridad (-SEG2) corta las válvulas.</li>
+                                <li><strong>Bisagras de Seguridad (-SF9, -SF10):</strong> Enclavamientos de puertas laterales que cortan el circuito.</li>
+                                <li><strong>Parada de Emergencia (E-STOP -SF2):</strong> Pulsador que abre el circuito de fuerza.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ppt-controls">
+            <button class="ppt-btn" onclick="prevSlide()">◀ Anterior</button>
+            <span class="ppt-counter"><span id="current-slide-num">1</span> / 6</span>
+            <button class="ppt-btn" onclick="nextSlide()">Siguiente ▶</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 2: SIMULADOR SCADA                   -->
+    <!-- ========================================== -->
+    <div class="layout-principal" id="vista-scada" style="display: none;">
+        
+        <div class="sidebar">
             <div class="hmi-seccion">
                 <div class="hmi-titulo">
                     <span>MODO OPERACIÓN</span>
-                    <select id="select-modo" onchange="cambiarModo()" style="width: 95px; font-size: 10px;">
+                    <select id="select-modo" onchange="cambiarModo()">
                         <option value="manual">Manual / Cota</option>
                         <option value="teach">Teach (Secuencia)</option>
                     </select>
                 </div>
-
                 <div class="form-row">
-                    <span>Material:</span>
+                    <span>Material (Espesor):</span>
                     <select id="select-material" onchange="actualizarMaterial()">
-                        <option value="inox">Inox (225 bar)</option>
-                        <option value="carbono" selected>Carbono (180 bar)</option>
-                        <option value="aluminio">Aluminio (110 bar)</option>
+                        <option value="inox">Inox 3mm (225 bar)</option>
+                        <option value="carbono" selected>Carbono 2mm (180 bar)</option>
+                        <option value="aluminio">Aluminio 1mm (110 bar)</option>
                     </select>
                 </div>
 
                 <div id="panel-manual">
-                    <div class="form-row">
-                        <span>Cota Y (mm):</span>
-                        <input type="text" id="cota-y" value="50.0">
-                    </div>
-                    <div class="form-row">
-                        <span>Cota X (mm):</span>
-                        <input type="text" id="cota-x" value="120.0">
-                    </div>
-                    <div class="form-row">
-                        <span>Mute (seg):</span>
-                        <input type="text" id="tiempo-mute" value="2.0">
-                    </div>
+                    <div class="form-row"><span>Cota Y (mm):</span><input type="text" id="cota-y" value="45.0" oninput="actualizarCamaraPieza()"></div>
+                    <div class="form-row"><span>Cota X (mm):</span><input type="text" id="cota-x" value="120.0"></div>
+                    <div class="form-row"><span>Mute (seg):</span><input type="text" id="tiempo-mute" value="1.5"></div>
                 </div>
 
                 <div id="panel-teach" style="display: none;">
-                    <div style="font-size: 9px; color: #f1c40f; margin-bottom: 2px;">Marque los puntos de pliegue:</div>
-                    <div class="teach-container">
-                        <canvas id="canvas-teach"></canvas>
-                    </div>
+                    <div style="font-size: 9px; color: #f1c40f; margin-bottom: 2px;">Cuadrícula 10x10mm (Snap to grid):</div>
+                    <div class="teach-container"><canvas id="canvas-teach"></canvas></div>
                     <div style="display:flex; gap:4px; margin-top: 4px;">
-                        <button class="btn-teach" onclick="deshacerPunto()" style="background-color: #2980b9; padding: 4px;">↩ Borrar Último</button>
-                        <button class="btn-teach" onclick="limpiarCanvas()" style="background-color: #c0392b; padding: 4px;">🗑️ Reiniciar</button>
+                        <button class="ctrl-btn btn-teach" onclick="deshacerPunto()" style="background-color: #2980b9;">↩ Borrar</button>
+                        <button class="ctrl-btn btn-teach" onclick="limpiarCanvas()" style="background-color: #c0392b;">🗑️ Reiniciar</button>
                     </div>
                 </div>
 
-                <div class="btn-group" style="margin-top: 6px;">
-                    <button class="btn-start" onclick="cmdStart()">▶ INICIAR CICLO</button>
-                </div>
+                <div class="btn-group" style="margin-top: 6px;"><button class="ctrl-btn btn-start" onclick="cmdStart()">▶ INICIAR CICLO</button></div>
                 <div class="btn-group">
-                    <button class="btn-reset" onclick="cmdRearme()">🔄 REARME</button>
-                    <button class="btn-stop" onclick="cmdEmergencia()">🛑 EMERGENCIA</button>
+                    <button class="ctrl-btn btn-reset" onclick="cmdRearme()">🔄 REARME</button>
+                    <button class="ctrl-btn btn-stop" onclick="cmdEmergencia()">🛑 EMERGENCIA</button>
                 </div>
                 <div style="display:flex; gap:5px;">
-                    <button class="btn-laser" onclick="cmdCortarLaser()">⚠️ Falla Láser</button>
-                    <button class="btn-fuga" onclick="cmdFugaAceite()">🛢️ Fuga Aceite</button>
+                    <button class="ctrl-btn btn-laser" onclick="cmdCortarLaser()">⚠️ Falla Láser</button>
+                    <button class="ctrl-btn btn-fuga" onclick="cmdFugaAceite()">🛢️ Fuga Aceite</button>
                 </div>
             </div>
 
             <div class="hmi-seccion">
-                <div class="hmi-titulo">SENSORES EN TIEMPO REAL</div>
-                <div class="form-row">
-                    <span>Eje Y (ZT-101):</span>
-                    <div class="pantalla-digital" id="display-pos-y">0.00</div>
-                </div>
-                <div class="form-row">
-                    <span>Eje X (Servo):</span>
-                    <div class="pantalla-digital" id="display-pos-x" style="color: #f39c12;">0.00</div>
-                </div>
-                <div class="form-row">
-                    <span>Nivel (LS):</span>
-                    <div class="pantalla-digital cool" id="display-nivel" style="font-size: 13px;">NORMAL</div>
-                </div>
-                <div class="form-row">
-                    <span>Temp. (TT):</span>
-                    <div class="pantalla-digital cool" id="display-temp">25.0 °C</div>
-                </div>
-                
-                <div style="font-size: 10px; margin-top: 2px; font-weight:bold; color: #ecf0f1;">Presión Máx Material</div>
+                <div class="hmi-titulo">TELEMETRÍA EN TIEMPO REAL</div>
+                <div class="form-row"><span>Eje Y (ZT-101):</span><div class="pantalla-digital" id="display-pos-y">0.00</div></div>
+                <div class="form-row"><span>Eje X (Servo):</span><div class="pantalla-digital" id="display-pos-x" style="color: #f39c12;">0.00</div></div>
+                <div class="form-row"><span>Nivel (LS):</span><div class="pantalla-digital cool" id="display-nivel" style="font-size: 13px;">NORMAL</div></div>
+                <div class="form-row"><span>Temp. (TT):</span><div class="pantalla-digital cool" id="display-temp">25.0 °C</div></div>
+                <div style="font-size: 10px; margin-top: 2px; font-weight:bold; color: #ecf0f1;">Presión PI-102 (Max)</div>
                 <div class="pantalla-digital cool" id="display-presion" style="font-size:15px;">180.0 bar</div>
                 <div class="barra-bg"><div class="barra-fill" id="barra-presion"></div></div>
             </div>
-
+            
+            <!-- NUEVO PANEL DE DIAGNÓSTICO PLC E/S (Según páginas 73-82) -->
+            <div class="hmi-seccion">
+                <div class="hmi-titulo">DIAGNÓSTICO E/S PLC ESA S630</div>
+                <div class="led-grid" style="grid-template-columns: repeat(2, 1fr); gap: 2px;">
+                    <div class="led-row"><div class="led" id="led-ia1"></div> IND. VÁLV. A1 (IA1)</div>
+                    <div class="led-row"><div class="led" id="led-ib1"></div> IND. VÁLV. B1 (IB1)</div>
+                    <div class="led-row"><div class="led" id="led-itx"></div> TOPE X (ITX)</div>
+                    <div class="led-row"><div class="led on" id="led-sf9"></div> BISAGRAS (SF9/10)</div>
+                    <div class="led-row"><div class="led" id="led-eva1"></div> EV. SUBIDA (EVA1)</div>
+                    <div class="led-row"><div class="led" id="led-evb1"></div> EV. BAJADA (EVB1)</div>
+                    <div class="led-row"><div class="led" id="led-evc1"></div> EV. CROWNING (EVC1)</div>
+                    <div class="led-row"><div class="led" id="led-eve1"></div> EV. PRESIÓN (EVE1)</div>
+                </div>
+            </div>
+            
+            <div class="consola" id="consola-logs" style="flex-grow: 1; max-width: 100%;"></div>
         </div>
 
-        <div class="contenedor-plano">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860">
-                <defs>
-                    <pattern id="cad-grid" width="50" height="50" patternUnits="userSpaceOnUse">
-                        <rect width="50" height="50" fill="none" />
-                        <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#ecf0f1" stroke-width="1"/>
-                    </pattern>
-                    <g id="isa-bubble">
-                        <circle cx="0" cy="0" r="18" fill="#fff" stroke="#2c3e50" stroke-width="1.5"/>
-                    </g>
-                </defs>
-
-                <rect width="100%" height="100%" fill="url(#cad-grid)"/>
+        <div class="columna-derecha">
+            <div class="monitores-superiores">
+                <div class="panel-camara">
+                    <div class="overlay-camara">● REC | V-DIE EN VIVO</div>
+                    <div class="overlay-angulo" id="angulo-display">180.0°</div>
+                    <svg id="svg-camara" viewBox="0 0 400 150" width="100%" height="100%">
+                        <polygon points="120,130 280,130 280,150 120,150" fill="#7f8c8d" stroke="#555" stroke-width="2"/>
+                        <polygon points="120,130 280,130 200,150" fill="#bdc3c7" stroke="#333" stroke-width="2"/>
+                        <polyline id="chapa-metal" points="50,130 200,130 350,130" fill="none" stroke="#ecf0f1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <g id="trancha-sim" transform="translate(0, 0)">
+                            <polygon points="180,30 220,30 200,130" fill="#34495e" stroke="#f1c40f" stroke-width="2"/>
+                            <rect x="160" y="10" width="80" height="20" fill="#2c3e50"/>
+                        </g>
+                    </svg>
+                </div>
                 
-                <rect x="20" y="20" width="1160" height="820" fill="none" stroke="#34495e" stroke-width="4"/>
-                <rect x="30" y="30" width="450" height="40" fill="#2c3e50" rx="4" ry="4"/>
-                <text x="255" y="55" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#fff">P&amp;ID INDUSTRIAL - NARGESA MP3003CNC</text>
-                
-                <rect x="30" y="80" width="300" height="190" fill="#fff" stroke="#34495e" stroke-width="2"/>
-                <rect x="30" y="80" width="300" height="25" fill="#ecf0f1" stroke="#34495e" stroke-width="1"/>
-                <text x="180" y="98" text-anchor="middle" class="texto-tag">TABLA DE EQUIPOS Y SENSORES</text>
-                
-                <text x="40" y="125" class="texto-tabla"><tspan font-weight="bold">CYL-Y1 / Y2:</tspan> Actuadores Principales (120 Tn)</text>
-                <text x="40" y="145" class="texto-tabla"><tspan font-weight="bold">CYL-C:</tspan> Mesa de Abombado (Crowning)</text>
-                <text x="40" y="165" class="texto-tabla"><tspan font-weight="bold">MANIFOLD:</tspan> Bloque Central Hoerbiger AMB</text>
-                <text x="40" y="185" class="texto-tabla"><tspan font-weight="bold">TY-Y1 / Y2:</tspan> Válvulas Proporcionales 4/3</text>
-                <text x="40" y="205" class="texto-tabla"><tspan font-weight="bold">ZT-101A/B:</tspan> Reglas Ópticas GIVI GVS200</text>
-                <text x="40" y="225" class="texto-tabla"><tspan font-weight="bold">TT / LS:</tspan> Temp. PT100 y Sensor de Nivel</text>
-                <text x="40" y="245" class="texto-tabla"><tspan font-weight="bold">M-01 / P-1:</tspan> Motor 9.5kW / Bomba 22 l/min</text>
-                <text x="40" y="265" class="texto-tabla"><tspan font-weight="bold">LÁSER:</tspan> Cortina de Seguridad Fiessler</text>
+                <div class="panel-camara">
+                    <div class="overlay-camara overlay-titulo-cad">⚙️ CAD | PREVIEW FINAL Y DOBLEZ ACTIVO</div>
+                    <svg id="svg-pieza-final" viewBox="0 0 400 150" width="100%" height="100%">
+                        <polyline id="chapa-final" points="" fill="none" stroke="#bdc3c7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle id="marcador-golpe" class="marcador-pulso" cx="0" cy="0" r="4" style="display: none;"/>
+                    </svg>
+                </div>
+            </div>
 
-                <rect x="380" y="110" width="580" height="420" fill="none" stroke="#bdc3c7" stroke-width="2" stroke-dasharray="15,5"/>
-                <text x="670" y="130" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#bdc3c7">BASTIDOR MECÁNICO PLEGADORA</text>
-
-                <g transform="translate(480, 160)">
-                    <rect id="cil-y1-body" class="cilindro-cuerpo" x="-40" y="0" width="80" height="110" fill="none" stroke="#2c3e50" stroke-width="3"/>
-                    <g class="parte-movil">
-                        <rect x="-40" y="40" width="80" height="20" fill="#7f8c8d" stroke="#2c3e50" stroke-width="2"/>
-                        <rect x="-15" y="60" width="30" height="100" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2"/>
-                    </g>
-                    <line x1="0" y1="-5" x2="0" y2="-25" stroke="#34495e" stroke-width="1.5"/>
-                    <text x="0" y="-30" text-anchor="middle" class="texto-tag">CYL-Y1</text>
-                </g>
-
-                <g transform="translate(860, 160)">
-                    <rect id="cil-y2-body" class="cilindro-cuerpo" x="-40" y="0" width="80" height="110" fill="none" stroke="#2c3e50" stroke-width="3"/>
-                    <g class="parte-movil">
-                        <rect x="-40" y="40" width="80" height="20" fill="#7f8c8d" stroke="#2c3e50" stroke-width="2"/>
-                        <rect x="-15" y="60" width="30" height="100" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2"/>
-                    </g>
-                    <line x1="0" y1="-5" x2="0" y2="-25" stroke="#34495e" stroke-width="1.5"/>
-                    <text x="0" y="-30" text-anchor="middle" class="texto-tag">CYL-Y2</text>
-                </g>
-
-                <g class="parte-movil">
-                    <rect x="450" y="320" width="440" height="30" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
-                    <polygon points="450,350 890,350 670,380" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
-                    <text x="670" y="340" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#fff">TRANCHA</text>
+            <!-- DIAGRAMA P&ID -->
+            <div class="contenedor-plano">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860">
+                    <defs>
+                        <pattern id="cad-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                            <rect width="50" height="50" fill="none" /><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#ecf0f1" stroke-width="1"/>
+                        </pattern>
+                        <g id="isa-bubble"><circle cx="0" cy="0" r="18" fill="#fff" stroke="#2c3e50" stroke-width="1.5"/></g>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#cad-grid)"/>
                     
-                    <line id="linea-laser" class="haz-laser" x1="400" y1="400" x2="940" y2="400"/>
-                    <rect x="400" y="385" width="20" height="30" fill="#f1c40f" stroke="#2c3e50"/>
-                    <rect x="920" y="385" width="20" height="30" fill="#f1c40f" stroke="#2c3e50"/>
-                    <text x="410" y="380" text-anchor="middle" font-size="10" font-family="Arial">TX</text>
-                    <text x="930" y="380" text-anchor="middle" font-size="10" font-family="Arial">RX</text>
-                </g>
-
-                <g id="matriz-inferior" class="cilindro-crowning" transform="translate(0,0)">
-                    <polygon points="450,480 890,480 890,520 450,520" fill="#7f8c8d" stroke="#2c3e50" stroke-width="3"/>
-                    <polygon points="450,480 890,480 670,510" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
-                    <text x="670" y="538" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#34495e">MESA V-DIE</text>
-                </g>
-                <rect id="cil-crowning" x="520" y="520" width="40" height="30" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2" style="transition: fill 0.2s;"/>
-                <text x="580" y="539" text-anchor="start" class="texto-tag">CYL-C (Abombado)</text>
-
-                <g id="tope-trasero" class="eje-x" transform="translateX(100)">
-                    <rect id="servo-x-box" x="790" y="430" width="30" height="50" fill="#e67e22" stroke="#2c3e50" stroke-width="2" style="transition: fill 0.2s;"/>
-                    <line x1="820" y1="455" x2="890" y2="455" stroke="#2c3e50" stroke-width="4" stroke-dasharray="10,5"/>
-                    <line x1="840" y1="455" x2="840" y2="425" stroke="#34495e" stroke-width="1.5"/>
-                    <text x="840" y="420" text-anchor="middle" class="texto-tag">SERVO X</text>
-                </g>
-
-                <g transform="translate(360, 240)">
-                    <rect x="0" y="0" width="12" height="140" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
-                    <use href="#isa-bubble" x="-35" y="70"/>
-                    <text x="-35" y="66" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">ZT</text>
-                    <text x="-35" y="79" text-anchor="middle" font-family="Arial" font-size="10">101A</text>
-                    <g class="parte-movil">
-                        <circle id="diodo-zt1" cx="6" cy="80" r="5" fill="#e74c3c" style="transition: fill 0.1s;"/>
-                        <line x1="12" y1="80" x2="90" y2="80" stroke="#2c3e50" stroke-width="2" stroke-dasharray="8,4"/>
+                    <foreignObject x="200" y="40" width="240" height="75">
+                        <div id="hud-y1" class="hud-box">
+                            <span class="hud-title">ACTUADOR LINEAL CYL-Y1</span>
+                            <span id="desc-y1">Estado: Reposo.<br>Fuerza: 0 Ton.</span>
+                        </div>
+                    </foreignObject>
+                    <g transform="translate(480, 160)">
+                        <rect id="cil-y1-body" class="cilindro-cuerpo" x="-40" y="0" width="80" height="110" fill="none" stroke="#2c3e50" stroke-width="3"/>
+                        <g class="parte-movil">
+                            <rect x="-40" y="40" width="80" height="20" fill="#7f8c8d" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="-15" y="60" width="30" height="100" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2"/>
+                        </g>
+                        <text x="0" y="-10" text-anchor="middle" class="texto-tag">CYL-Y1</text>
                     </g>
-                </g>
-                <g transform="translate(980, 240)">
-                    <rect x="0" y="0" width="12" height="140" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
-                    <use href="#isa-bubble" x="45" y="70"/>
-                    <text x="45" y="66" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">ZT</text>
-                    <text x="45" y="79" text-anchor="middle" font-family="Arial" font-size="10">101B</text>
-                    <g class="parte-movil">
-                        <circle id="diodo-zt2" cx="6" cy="80" r="5" fill="#e74c3c" style="transition: fill 0.1s;"/>
-                        <line x1="0" y1="80" x2="-90" y2="80" stroke="#2c3e50" stroke-width="2" stroke-dasharray="8,4"/>
+
+                    <foreignObject x="760" y="40" width="240" height="75">
+                        <div id="hud-y2" class="hud-box">
+                            <span class="hud-title">ACTUADOR LINEAL CYL-Y2</span>
+                            <span id="desc-y2">Estado: Reposo.<br>Sincronización PLC OK.</span>
+                        </div>
+                    </foreignObject>
+                    <g transform="translate(860, 160)">
+                        <rect id="cil-y2-body" class="cilindro-cuerpo" x="-40" y="0" width="80" height="110" fill="none" stroke="#2c3e50" stroke-width="3"/>
+                        <g class="parte-movil">
+                            <rect x="-40" y="40" width="80" height="20" fill="#7f8c8d" stroke="#2c3e50" stroke-width="2"/>
+                            <rect x="-15" y="60" width="30" height="100" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2"/>
+                        </g>
+                        <text x="0" y="-10" text-anchor="middle" class="texto-tag">CYL-Y2</text>
                     </g>
-                </g>
 
-                <rect x="420" y="580" width="500" height="120" fill="#f8f9fa" stroke="#34495e" stroke-width="2" stroke-dasharray="10,5"/>
-                <text x="670" y="600" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#34495e">MANIFOLD PRINCIPAL (HOERBIGER AMB)</text>
+                    <g class="parte-movil">
+                        <rect x="450" y="320" width="440" height="30" fill="#34495e" stroke="#2c3e50" stroke-width="3"/>
+                        <polygon points="450,350 890,350 670,380" fill="#95a5a6" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="670" y="340" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold" fill="#fff">TRANCHA SUPERIOR</text>
+                        <line id="linea-laser" class="haz-laser" x1="400" y1="400" x2="940" y2="400"/>
+                        <rect x="400" y="385" width="20" height="30" fill="#f1c40f" stroke="#2c3e50"/>
+                        <rect x="920" y="385" width="20" height="30" fill="#f1c40f" stroke="#2c3e50"/>
+                        <text x="410" y="380" text-anchor="middle" font-size="10" font-family="Arial">TX</text>
+                        <text x="930" y="380" text-anchor="middle" font-size="10" font-family="Arial">RX</text>
+                    </g>
 
-                <rect id="valvula-y1" class="valvula" x="450" y="630" width="80" height="35" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
-                <use href="#isa-bubble" x="490" y="700"/>
-                <text x="490" y="704" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">TY-Y1</text>
-                <line x1="490" y1="665" x2="490" y2="682" stroke="#2c3e50" stroke-width="1.5"/>
+                    <foreignObject x="970" y="380" width="200" height="70">
+                        <div id="hud-x" class="hud-box">
+                            <span class="hud-title">MOTOR SERVO EJE X</span>
+                            <span id="desc-x">Fija la profundidad de la chapa.</span>
+                        </div>
+                    </foreignObject>
 
-                <rect id="valvula-y2" class="valvula" x="810" y="630" width="80" height="35" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
-                <use href="#isa-bubble" x="850" y="700"/>
-                <text x="850" y="704" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">TY-Y2</text>
-                <line x1="850" y1="665" x2="850" y2="682" stroke="#2c3e50" stroke-width="1.5"/>
+                    <g id="matriz-inferior" transform="translate(0,0)">
+                        <polygon points="450,480 890,480 890,520 450,520" fill="#7f8c8d" stroke="#2c3e50" stroke-width="3"/>
+                        <polygon points="450,480 890,480 670,510" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="670" y="538" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#34495e">MESA V-DIE</text>
+                    </g>
+                    <rect id="cil-crowning" class="cilindro-crowning" x="520" y="520" width="40" height="30" fill="#bdc3c7" stroke="#2c3e50" stroke-width="2"/>
 
-                <circle id="bomba-motor" class="bomba-activa" cx="150" cy="620" r="25" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
-                <text x="150" y="625" text-anchor="middle" font-family="Arial" font-weight="bold">M-01</text>
-                <text x="185" y="650" text-anchor="start" class="texto-tag">BOMBA P-1</text>
-                
-                <path d="M 110,720 L 110,680 L 190,680 L 190,720" fill="none" stroke="#2c3e50" stroke-width="3"/>
-                <text x="150" y="740" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#34495e">TANQUE (TK-1)</text>
+                    <foreignObject x="180" y="440" width="220" height="85">
+                        <div id="hud-c" class="hud-box">
+                            <span class="hud-title">CILINDRO DE ABOMBADO</span>
+                            <span id="desc-c">Compensador de deflexión.<br>Inactivo (Solo en prensado).</span>
+                        </div>
+                    </foreignObject>
 
-                <polyline points="150,680 150,645" fill="none" stroke="#002244" stroke-width="4"/>
-                <polyline id="linea-p" class="linea-presion" points="150,595 150,560 850,560 850,630" fill="none" stroke="#002244" stroke-width="4"/>
-                <polyline class="linea-presion" id="linea-p2" points="490,560 490,630" fill="none" stroke="#002244" stroke-width="4"/>
-                <polyline class="linea-presion" points="490,630 490,270" fill="none" stroke="#002244" stroke-width="4"/>
-                <polyline class="linea-presion" points="850,630 850,270" fill="none" stroke="#002244" stroke-width="4"/>
-                
-                <polyline points="670,630 670,690" fill="none" stroke="#002244" stroke-width="4"/>
-                <polygon points="660,660 680,660 670,675" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
-                <text x="705" y="672" text-anchor="middle" class="texto-tag">FLT-1</text>
+                    <g id="tope-trasero" class="eje-x" transform="translateX(100)">
+                        <rect id="servo-x-box" x="790" y="430" width="30" height="50" fill="#e67e22" stroke="#2c3e50" stroke-width="2"/>
+                        <line x1="820" y1="455" x2="890" y2="455" stroke="#2c3e50" stroke-width="4" stroke-dasharray="10,5"/>
+                        <text x="850" y="420" text-anchor="middle" class="texto-tag">SERVO X</text>
+                    </g>
 
-                <use href="#isa-bubble" x="240" y="700"/>
-                <text x="240" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">TT</text>
-                <text x="240" y="709" text-anchor="middle" font-family="Arial" font-size="10">101</text>
-                <line x1="222" y1="700" x2="190" y2="700" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,2"/>
-                
-                <use href="#isa-bubble" x="60" y="700"/>
-                <text x="60" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">LS</text>
-                <text x="60" y="709" text-anchor="middle" font-family="Arial" font-size="10">101</text>
-                <line x1="78" y1="700" x2="110" y2="700" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,2"/>
+                    <foreignObject x="80" y="240" width="220" height="70">
+                        <div id="hud-zt" class="hud-box">
+                            <span class="hud-title">REGLAS ÓPTICAS ZT-101</span>
+                            <span id="desc-zt">Encoder Lineal.<br>Realimentación Lazo Cerrado.</span>
+                        </div>
+                    </foreignObject>
+                    <g transform="translate(360, 240)">
+                        <rect x="0" y="0" width="12" height="140" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+                        <use href="#isa-bubble" x="-35" y="70"/>
+                        <text x="-35" y="66" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">ZT</text>
+                        <text x="-35" y="79" text-anchor="middle" font-family="Arial" font-size="10">101A</text>
+                        <g class="parte-movil">
+                            <circle id="diodo-zt1" cx="6" cy="80" r="5" fill="#e74c3c" style="transition: fill 0.1s;"/>
+                            <line x1="12" y1="80" x2="90" y2="80" stroke="#2c3e50" stroke-width="2" stroke-dasharray="8,4"/>
+                        </g>
+                    </g>
+                    <g transform="translate(980, 240)">
+                        <rect x="0" y="0" width="12" height="140" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+                        <use href="#isa-bubble" x="45" y="70"/>
+                        <text x="45" y="66" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">ZT</text>
+                        <text x="45" y="79" text-anchor="middle" font-family="Arial" font-size="10">101B</text>
+                        <g class="parte-movil">
+                            <circle id="diodo-zt2" cx="6" cy="80" r="5" fill="#e74c3c" style="transition: fill 0.1s;"/>
+                            <line x1="0" y1="80" x2="-90" y2="80" stroke="#2c3e50" stroke-width="2" stroke-dasharray="8,4"/>
+                        </g>
+                    </g>
 
-            </svg>
+                    <foreignObject x="30" y="520" width="220" height="90">
+                        <div id="hud-bomba" class="hud-box">
+                            <span class="hud-title">GRUPO HIDRÁULICO</span>
+                            <span id="desc-bomba">Motor M-01 en reposo.<br>Válvulas direccionales cerradas.</span>
+                        </div>
+                    </foreignObject>
+
+                    <rect x="420" y="580" width="500" height="120" fill="#f8f9fa" stroke="#34495e" stroke-width="2" stroke-dasharray="10,5"/>
+                    <text x="670" y="600" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#34495e">MANIFOLD PRINCIPAL</text>
+
+                    <rect id="valvula-y1" class="valvula" x="450" y="630" width="80" height="35" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
+                    <use href="#isa-bubble" x="490" y="700"/>
+                    <text x="490" y="704" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">TY-Y1</text>
+                    <line x1="490" y1="665" x2="490" y2="682" stroke="#2c3e50" stroke-width="1.5"/>
+
+                    <rect id="valvula-y2" class="valvula" x="810" y="630" width="80" height="35" fill="#fff" stroke="#2c3e50" stroke-width="2"/>
+                    <use href="#isa-bubble" x="850" y="700"/>
+                    <text x="850" y="704" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">TY-Y2</text>
+                    <line x1="850" y1="665" x2="850" y2="682" stroke="#2c3e50" stroke-width="1.5"/>
+
+                    <g id="grupo-bomba">
+                        <circle id="bomba-motor" cx="150" cy="620" r="25" fill="#fff" stroke="#2c3e50" stroke-width="2" style="transition: fill 0.2s;"/>
+                        <g id="impeller">
+                            <line x1="150" y1="605" x2="150" y2="635" stroke="#34495e" stroke-width="4"/>
+                            <line x1="137" y1="613" x2="163" y2="627" stroke="#34495e" stroke-width="4"/>
+                            <line x1="137" y1="627" x2="163" y2="613" stroke="#34495e" stroke-width="4"/>
+                        </g>
+                    </g>
+                    <text x="150" y="660" text-anchor="middle" class="texto-tag">MOTOR / BOMBA</text>
+                    
+                    <path d="M 110,720 L 110,680 L 190,680 L 190,720" fill="none" stroke="#2c3e50" stroke-width="3"/>
+                    
+                    <polyline points="150,680 150,645" fill="none" stroke="#002244" stroke-width="4"/>
+                    <polyline id="linea-p" class="linea-presion" points="150,595 150,560 850,560 850,630" fill="none" stroke="#002244" stroke-width="4"/>
+                    <polyline class="linea-presion" id="linea-p2" points="490,560 490,630" fill="none" stroke="#002244" stroke-width="4"/>
+                    <polyline class="linea-presion" points="490,630 490,270" fill="none" stroke="#002244" stroke-width="4"/>
+                    <polyline class="linea-presion" points="850,630 850,270" fill="none" stroke="#002244" stroke-width="4"/>
+                    <polyline points="670,630 670,690" fill="none" stroke="#002244" stroke-width="4"/>
+                    
+                    <foreignObject x="310" y="730" width="280" height="70">
+                        <div id="hud-tanque" class="hud-box">
+                            <span class="hud-title">SENSORES TANQUE ACEITE</span>
+                            <span id="desc-tanque">TT-101: Temperatura Normal.<br>LS-101: Nivel de Aceite Óptimo.</span>
+                        </div>
+                    </foreignObject>
+
+                    <use href="#isa-bubble" x="240" y="700"/>
+                    <text x="240" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">TT</text>
+                    <line x1="222" y1="700" x2="190" y2="700" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,2"/>
+                    
+                    <use href="#isa-bubble" x="60" y="700"/>
+                    <text x="60" y="696" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="11">LS</text>
+                    <line x1="78" y1="700" x2="110" y2="700" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="4,2"/>
+                </svg>
+            </div>
         </div>
-
     </div>
 
+    <!-- SCRIPT CENTRAL -->
     <script>
-        let posY = 0.0;
-        let posX = 0.0;
-        let objY = 0.0;
-        let objX = 0.0;
-        let tempAceite = 25.0; 
-        let tiempoMute = 2.0; 
-        let presionTrabajo = 180.0; 
+        function switchTab(tab) {
+            document.getElementById('btn-tab-scada').classList.remove('active');
+            document.getElementById('btn-tab-ppt').classList.remove('active');
+            document.getElementById('vista-scada').style.display = 'none';
+            document.getElementById('vista-presentacion').style.display = 'none';
+            
+            if(tab === 'scada') {
+                document.getElementById('btn-tab-scada').classList.add('active');
+                document.getElementById('vista-scada').style.display = 'flex';
+                inicializarCanvas();
+            } else {
+                document.getElementById('btn-tab-ppt').classList.add('active');
+                document.getElementById('vista-presentacion').style.display = 'flex';
+            }
+        }
+
+        let currentSlide = 1;
+        const totalSlides = 6;
+        function showSlide(n) {
+            for(let i=1; i<=totalSlides; i++) { document.getElementById('slide-'+i).classList.remove('active'); }
+            document.getElementById('slide-'+n).classList.add('active');
+            document.getElementById('current-slide-num').innerText = n;
+        }
+        function nextSlide() { if(currentSlide < totalSlides) { currentSlide++; showSlide(currentSlide); } }
+        function prevSlide() { if(currentSlide > 1) { currentSlide--; showSlide(currentSlide); } }
+
+        let posY = 0.0; let posX = 0.0; let objY = 0.0; let objX = 0.0;
+        let tempAceite = 25.0; let tiempoMute = 1.5; let presionTrabajo = 180.0; 
         let estado = "STOP"; 
         
-        let loopID = null;
-        let timerID = null; 
-        let laserBloqueado = false;
-        let fallaAceite = false;
+        let loopID = null; let timerID = null; let laserBloqueado = false; let fallaAceite = false;
+        let modoOperacion = "manual"; let verticesTrazo = []; let colaCotasTeach = []; let indiceGolpeActual = 0;
 
-        let modoOperacion = "manual";
-        let verticesTrazo = [];
-        let colaCotasTeach = []; 
-        let indiceGolpeActual = 0;
-
-        const VEL_Y_DOWN = 15.0; 
-        const VEL_Y_UP = 25.0; 
-        const FPS = 60;
-        const ESCALA_Y = 1.3; 
+        const VEL_Y_DOWN = 15.0; const VEL_Y_UP = 25.0; const FPS = 60; const ESCALA_Y = 1.3; 
 
         const selectModo = document.getElementById('select-modo');
         const panelManual = document.getElementById('panel-manual');
         const panelTeach = document.getElementById('panel-teach');
         const canvasTeach = document.getElementById('canvas-teach');
         const ctxTeach = canvasTeach.getContext('2d');
-
-        const selectMaterial = document.getElementById('select-material');
         const inCotaY = document.getElementById('cota-y');
         const inCotaX = document.getElementById('cota-x');
-        const inMute = document.getElementById('tiempo-mute');
         const consola = document.getElementById('consola-logs');
-        
         const dispPosY = document.getElementById('display-pos-y');
-        const dispPosX = document.getElementById('display-pos-x');
-        const dispTemp = document.getElementById('display-temp');
         const dispPresion = document.getElementById('display-presion');
-        const dispNivel = document.getElementById('display-nivel');
-        const barraPresion = document.getElementById('barra-presion');
-        
         const piezasMoviles = document.querySelectorAll('.parte-movil');
         const grupoEjeX = document.getElementById('tope-trasero');
-        const dibujoLaser = document.getElementById('linea-laser');
-        const cilindroCrowning = document.getElementById('matriz-inferior');
+        const lineaLaser = document.getElementById('linea-laser');
         
         const cilY1Body = document.getElementById('cil-y1-body');
         const cilY2Body = document.getElementById('cil-y2-body');
@@ -517,227 +703,272 @@
         const servoXBox = document.getElementById('servo-x-box');
         const diodoZT1 = document.getElementById('diodo-zt1');
         const diodoZT2 = document.getElementById('diodo-zt2');
+        const motorBomba = document.getElementById('bomba-motor');
+        const impeller = document.getElementById('impeller');
 
-        const ledY1 = document.getElementById('led-y1');
-        const ledY2 = document.getElementById('led-y2');
-        const ledBomba = document.getElementById('led-bomba');
-        const ledLaser = document.getElementById('led-laser');
-        const ledLS = document.getElementById('led-ls');
-        const ledAlm = document.getElementById('led-alm');
+        const chapaMetal = document.getElementById('chapa-metal');
+        const tranchaSim = document.getElementById('trancha-sim');
+        const anguloDisplay = document.getElementById('angulo-display');
+        const chapaFinal = document.getElementById('chapa-final');
+        const marcadorGolpe = document.getElementById('marcador-golpe');
+
+        const hudY1 = document.getElementById('hud-y1'); const descY1 = document.getElementById('desc-y1');
+        const hudY2 = document.getElementById('hud-y2'); const descY2 = document.getElementById('desc-y2');
+        const hudX = document.getElementById('hud-x'); const descX = document.getElementById('desc-x');
+        const hudC = document.getElementById('hud-c'); const descC = document.getElementById('desc-c');
+        const hudZT = document.getElementById('hud-zt'); const descZT = document.getElementById('desc-zt');
+        const hudBomba = document.getElementById('hud-bomba'); const descBomba = document.getElementById('desc-bomba');
 
         function inicializarCanvas() {
-            canvasTeach.width = canvasTeach.parentElement.clientWidth;
-            canvasTeach.height = canvasTeach.parentElement.clientHeight;
-            redibujarPoligono();
+            if(panelTeach.style.display !== "none" && canvasTeach.parentElement.clientWidth > 0) {
+                canvasTeach.width = canvasTeach.parentElement.clientWidth;
+                canvasTeach.height = canvasTeach.parentElement.clientHeight;
+                redibujarPoligono();
+            }
+            actualizarCamaraPieza();
         }
         window.addEventListener('resize', inicializarCanvas);
-        window.onload = inicializarCanvas;
+        window.onload = function() {
+            inicializarCanvas();
+            logMsg("SOFTWARE DE CONTROL NUMÉRICO INICIADO.");
+        };
 
         canvasTeach.addEventListener('click', (e) => {
             const rect = canvasTeach.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let y = e.clientY - rect.top;
+            let x = Math.round((e.clientX - rect.left) / 10) * 10;
+            let y = Math.round((e.clientY - rect.top) / 10) * 10;
             verticesTrazo.push({x: x, y: y});
-            redibujarPoligono();
-            logMsg(`Vértice añadido: X=${x.toFixed(0)}, Y=${y.toFixed(0)}`);
+            redibujarPoligono(); actualizarCamaraPieza();
         });
 
         function redibujarPoligono() {
             ctxTeach.clearRect(0, 0, canvasTeach.width, canvasTeach.height);
             if (verticesTrazo.length === 0) return;
-
-            ctxTeach.strokeStyle = "#f1c40f";
-            ctxTeach.lineWidth = 2;
-            ctxTeach.beginPath();
+            ctxTeach.strokeStyle = "#2ecc71"; ctxTeach.lineWidth = 2; ctxTeach.beginPath();
             ctxTeach.moveTo(verticesTrazo[0].x, verticesTrazo[0].y);
-
-            for (let i = 1; i < verticesTrazo.length; i++) {
-                ctxTeach.lineTo(verticesTrazo[i].x, verticesTrazo[i].y);
-            }
+            for (let i = 1; i < verticesTrazo.length; i++) ctxTeach.lineTo(verticesTrazo[i].x, verticesTrazo[i].y);
             ctxTeach.stroke();
-
             ctxTeach.fillStyle = "#e74c3c";
-            verticesTrazo.forEach(v => {
-                ctxTeach.beginPath();
-                ctxTeach.arc(v.x, v.y, 4, 0, Math.PI * 2);
-                ctxTeach.fill();
-            });
+            verticesTrazo.forEach(v => { ctxTeach.beginPath(); ctxTeach.arc(v.x, v.y, 3, 0, Math.PI * 2); ctxTeach.fill(); });
         }
-
-        function deshacerPunto() {
-            verticesTrazo.pop();
-            redibujarPoligono();
-            logMsg("Último vértice eliminado.");
-        }
-
-        function limpiarCanvas() {
-            verticesTrazo = [];
-            ctxTeach.clearRect(0, 0, canvasTeach.width, canvasTeach.height);
-            logMsg("Secuencia Teach borrada.");
-        }
+        function deshacerPunto() { verticesTrazo.pop(); redibujarPoligono(); actualizarCamaraPieza(); }
+        function limpiarCanvas() { verticesTrazo = []; ctxTeach.clearRect(0, 0, canvasTeach.width, canvasTeach.height); actualizarCamaraPieza(); }
 
         function cambiarModo() {
             modoOperacion = selectModo.value;
             if(modoOperacion === "teach") {
-                panelManual.style.display = "none";
-                panelTeach.style.display = "block";
-                logMsg("Modo Teach (Multi-Golpe) Activado.");
+                panelManual.style.display = "none"; panelTeach.style.display = "block";
                 setTimeout(inicializarCanvas, 50);
             } else {
-                panelTeach.style.display = "none";
-                panelManual.style.display = "block";
-                logMsg("Modo Manual / Cota Activado.");
+                panelTeach.style.display = "none"; panelManual.style.display = "block"; actualizarCamaraPieza();
             }
         }
 
         function actualizarMaterial() {
-            let mat = selectMaterial.value;
-            if (mat === 'inox') {
-                presionTrabajo = 225.0;
-                logMsg("Material: Inoxidable -> 225 bar");
-            } else if (mat === 'carbono') {
-                presionTrabajo = 180.0;
-                logMsg("Material: Acero Carbono -> 180 bar");
-            } else if (mat === 'aluminio') {
-                presionTrabajo = 110.0;
-                logMsg("Material: Aluminio -> 110 bar");
-            }
+            let mat = document.getElementById('select-material').value;
+            if (mat === 'inox') presionTrabajo = 225.0;
+            else if (mat === 'carbono') presionTrabajo = 180.0;
+            else if (mat === 'aluminio') presionTrabajo = 110.0;
             dispPresion.innerText = presionTrabajo.toFixed(1) + " bar";
         }
 
         function logMsg(mensaje) {
             let now = new Date();
-            let timeStr = now.getHours().toString().padStart(2, '0') + ":" + 
-                          now.getMinutes().toString().padStart(2, '0') + ":" + 
-                          now.getSeconds().toString().padStart(2, '0');
-            consola.innerHTML += `<div>[${timeStr}] ${mensaje}</div>`;
-            consola.scrollTop = consola.scrollHeight; 
+            let t = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0') + ":" + now.getSeconds().toString().padStart(2,'0');
+            consola.innerHTML += `<div>[${t}] ${mensaje}</div>`; consola.scrollTop = consola.scrollHeight; 
         }
 
-        logMsg("DASHBOARD SCADA INDUSTRIAL INICIADO.");
-        actualizarMaterial();
+        function actualizarCamaraPieza() {
+            if (modoOperacion === "teach" && verticesTrazo.length > 1) {
+                let minX = Math.min(...verticesTrazo.map(p => p.x)); let maxX = Math.max(...verticesTrazo.map(p => p.x));
+                let minY = Math.min(...verticesTrazo.map(p => p.y)); let maxY = Math.max(...verticesTrazo.map(p => p.y));
+                let width = maxX - minX || 1; let height = maxY - minY || 1;
+                let scale = Math.min(250 / width, 100 / height);
+                let offsetX = 200 - ((width * scale) / 2); let offsetY = 75 - ((height * scale) / 2);
+                
+                let pointsArray = verticesTrazo.map(p => ({ x: offsetX + (p.x - minX) * scale, y: offsetY + (p.y - minY) * scale }));
+                chapaFinal.setAttribute('points', pointsArray.map(p => `${p.x},${p.y}`).join(" "));
+
+                if (estado !== "STOP" && estado !== "EMG" && indiceGolpeActual > 0 && indiceGolpeActual <= pointsArray.length) {
+                    let ptActual = pointsArray[indiceGolpeActual - 1]; 
+                    marcadorGolpe.setAttribute("cx", ptActual.x); marcadorGolpe.setAttribute("cy", ptActual.y);
+                    marcadorGolpe.style.display = "block";
+                } else marcadorGolpe.style.display = "none";
+            } else if (modoOperacion === "manual") {
+                let penVisual = (parseFloat(inCotaY.value) / 100) * 45;
+                if(isNaN(penVisual) || penVisual < 0) penVisual = 0;
+                let ang = 130 - penVisual; 
+                chapaFinal.setAttribute('points', `100,75 200,${ang} 300,75`);
+                marcadorGolpe.setAttribute("cx", 200); marcadorGolpe.setAttribute("cy", ang);
+                marcadorGolpe.style.display = (estado !== "STOP" && estado !== "EMG") ? "block" : "none";
+            } else {
+                chapaFinal.setAttribute('points', ""); marcadorGolpe.style.display = "none";
+            }
+        }
+        inCotaY.addEventListener('input', actualizarCamaraPieza);
+
+        function calcularCamaraVirtual() {
+            const cx = 200; const cyBase = 130; const vDieIzq = 120; const vDieDer = 280; 
+            let penVisual = (posY / 100) * 45; if(penVisual < 0) penVisual = 0;
+            let centerY = cyBase + penVisual;
+            let angleIzqRad = Math.atan2(cyBase - centerY, vDieIzq - cx);
+            let extIzqX = cx + 150 * Math.cos(angleIzqRad); let extIzqY = centerY + 150 * Math.sin(angleIzqRad);
+            let angleDerRad = Math.atan2(cyBase - centerY, vDieDer - cx);
+            let extDerX = cx + 150 * Math.cos(angleDerRad); let extDerY = centerY + 150 * Math.sin(angleDerRad);
+            
+            chapaMetal.setAttribute('points', `${extIzqX},${extIzqY} ${cx},${centerY} ${extDerX},${extDerY}`);
+            tranchaSim.setAttribute('transform', `translate(0, ${penVisual})`);
+            
+            let anguloInterno = 180 - (Math.abs(angleDerRad * (180 / Math.PI)) * 2);
+            if(penVisual === 0) anguloInterno = 180.0;
+            anguloDisplay.innerText = anguloInterno.toFixed(1) + "°";
+        }
+
+        function resetHUDs() {
+            hudY1.className="hud-box"; hudY2.className="hud-box"; hudX.className="hud-box"; 
+            hudC.className="hud-box"; hudZT.className="hud-box"; hudBomba.className="hud-box"; 
+        }
 
         function actualizarInterfaz() {
             dispPosY.innerText = posY.toFixed(2);
-            let pxY = posY * ESCALA_Y;
-            piezasMoviles.forEach(p => p.style.transform = `translateY(${pxY}px)`);
+            piezasMoviles.forEach(p => p.style.transform = `translateY(${posY * ESCALA_Y}px)`);
+            document.getElementById('display-pos-x').innerText = posX.toFixed(2);
+            grupoEjeX.style.transform = `translateX(${(150 - posX) * -1.5}px)`;
 
-            dispPosX.innerText = posX.toFixed(2);
-            let pxX = (150 - posX) * -1.5; 
-            grupoEjeX.style.transform = `translateX(${pxX}px)`;
+            calcularCamaraVirtual(); actualizarCamaraPieza(); resetHUDs();
 
-            document.getElementById('valvula-y1').classList.remove('valvula-activa');
-            document.getElementById('valvula-y2').classList.remove('valvula-activa');
+            // RESET DE LEDS DIAGNÓSTICO E/S
+            ['ia1','ib1','itx','eva1','evb1','evc1','eve1'].forEach(id => document.getElementById('led-'+id).classList.remove('on'));
+            
             document.querySelectorAll('.linea-presion').forEach(l => l.classList.remove('linea-activa'));
             dispPresion.classList.remove('alerta', 'hold', 'cool');
-            barraPresion.classList.remove('full');
-            ledY1.classList.remove('on'); ledY2.classList.remove('on');
+            document.getElementById('barra-presion').classList.remove('full');
             
-            cilY1Body.className = "cilindro-cuerpo";
-            cilY2Body.className = "cilindro-cuerpo";
-            cilCrowning.classList.remove('crowning-activo');
-            servoXBox.classList.remove('servo-activo');
+            cilY1Body.setAttribute('class', 'cilindro-cuerpo');
+            cilY2Body.setAttribute('class', 'cilindro-cuerpo');
+            
+            cilCrowning.classList.remove('crowning-activo'); servoXBox.classList.remove('servo-activo');
+            impeller.classList.remove('motor-run'); motorBomba.classList.remove('motor-base-run');
+            
             let diodeColor = "#e74c3c";
 
             if (estado === "EMG") {
-                dispPresion.innerText = "0.0 bar";
-                dispPresion.classList.add('alerta');
-                barraPresion.style.width = "0%";
-                ledBomba.classList.remove('on');
-                document.getElementById('bomba-motor').classList.remove('bomba-activa');
-                diodeColor = "#7f8c8d";
+                dispPresion.innerText = "0.0 bar"; dispPresion.classList.add('alerta');
+                document.getElementById('barra-presion').style.width = "0%";
+                
+                descY1.innerHTML = "BLOQUEO EMERGENCIA.<br>Válvulas cerradas."; hudY1.classList.add('hud-alerta');
+                descY2.innerHTML = "BLOQUEO EMERGENCIA.<br>Válvulas cerradas."; hudY2.classList.add('hud-alerta');
+                descBomba.innerHTML = "MOTOR DETENIDO.<br>Corte E-STOP."; hudBomba.classList.add('hud-alerta');
+                descX.innerHTML = "Servomotor bloqueado."; hudX.classList.add('hud-alerta');
+                
+                document.getElementById('led-sf9').classList.remove('on'); document.getElementById('led-sf9').classList.add('error');
             } 
             else if (estado === "AJUSTE_X") {
-                dispPresion.innerText = "15.0 bar";
-                dispPresion.classList.add('cool');
-                barraPresion.style.width = "10%";
-                servoXBox.classList.add('servo-activo'); 
-                diodeColor = "#2ecc71";
+                dispPresion.innerText = "15.0 bar"; dispPresion.classList.add('cool');
+                document.getElementById('barra-presion').style.width = "10%";
+                servoXBox.classList.add('servo-activo'); diodeColor = "#2ecc71";
+                impeller.classList.add('motor-run'); motorBomba.classList.add('motor-base-run');
+
+                descX.innerHTML = `Moviendo tope a ${objX.toFixed(1)}mm.`; hudX.classList.add('hud-activo');
+                descBomba.innerHTML = "Bomba girando (Standby).<br>Preparando flujo."; hudBomba.classList.add('hud-activo');
+                
+                document.getElementById('led-sf9').classList.remove('error'); document.getElementById('led-sf9').classList.add('on');
+                document.getElementById('led-itx').classList.add('on');
             }
             else if (estado === "BAJANDO") {
-                document.getElementById('valvula-y1').classList.add('valvula-activa');
-                document.getElementById('valvula-y2').classList.add('valvula-activa');
                 document.querySelectorAll('.linea-presion').forEach(l => l.classList.add('linea-activa'));
-                ledY1.classList.add('on'); ledY2.classList.add('on');
-                dispPresion.innerText = (presionTrabajo * 0.4).toFixed(1) + " bar";
-                dispPresion.style.color = "#2ecc71";
-                barraPresion.style.width = "40%";
+                dispPresion.innerText = (presionTrabajo * 0.4).toFixed(1) + " bar"; dispPresion.style.color = "#2ecc71";
+                document.getElementById('barra-presion').style.width = "40%";
                 
-                cilY1Body.classList.add('cilindro-activo');
-                cilY2Body.classList.add('cilindro-activo');
+                cilY1Body.setAttribute('class', 'cilindro-cuerpo cilindro-activo');
+                cilY2Body.setAttribute('class', 'cilindro-cuerpo cilindro-activo');
+                impeller.classList.add('motor-run'); motorBomba.classList.add('motor-base-run');
                 diodeColor = "#2ecc71"; 
+
+                descY1.innerHTML = `Inyectando aceite.<br>Bajando a cota ${objY.toFixed(1)}mm.`; hudY1.classList.add('hud-activo');
+                descY2.innerHTML = `Inyectando aceite.<br>Bajando a cota ${objY.toFixed(1)}mm.`; hudY2.classList.add('hud-activo');
+                descZT.innerHTML = `Lazo Cerrado PID.<br>Y Actual: ${posY.toFixed(2)}mm.`; hudZT.classList.add('hud-activo');
+                descBomba.innerHTML = `Presurizando colector.<br>Flujo activo.`; hudBomba.classList.add('hud-activo');
+                
+                document.getElementById('led-evb1').classList.add('on');
+                document.getElementById('led-eve1').classList.add('on');
+                document.getElementById('led-ib1').classList.add('on');
             } 
             else if (estado === "HOLD") {
-                dispPresion.innerText = presionTrabajo.toFixed(1) + " bar"; 
-                dispPresion.classList.add('hold'); 
-                barraPresion.style.width = "100%";
-                barraPresion.classList.add('full');
+                dispPresion.innerText = presionTrabajo.toFixed(1) + " bar"; dispPresion.classList.add('hold'); 
+                document.getElementById('barra-presion').style.width = "100%"; document.getElementById('barra-presion').classList.add('full');
                 
-                cilY1Body.classList.add('cilindro-prensando');
-                cilY2Body.classList.add('cilindro-prensando');
+                cilY1Body.setAttribute('class', 'cilindro-cuerpo cilindro-prensando');
+                cilY2Body.setAttribute('class', 'cilindro-cuerpo cilindro-prensando');
                 cilCrowning.classList.add('crowning-activo'); 
+                impeller.classList.add('motor-run'); motorBomba.classList.add('motor-base-run');
                 diodeColor = "#f1c40f";
+
+                descY1.innerHTML = `PRENSANDO - MAX FUERZA.<br>Doblando material.`; hudY1.classList.add('hud-aviso');
+                descY2.innerHTML = `PRENSANDO - MAX FUERZA.<br>Doblando material.`; hudY2.classList.add('hud-aviso');
+                descC.innerHTML = `PRESIÓN ALTA INYECTADA.<br>Compensando deflexión.`; hudC.classList.add('hud-aviso');
+                descBomba.innerHTML = `Carga tope alcanzada:<br>${presionTrabajo} bar.`; hudBomba.classList.add('hud-aviso');
+                
+                document.getElementById('led-evb1').classList.add('on');
+                document.getElementById('led-evc1').classList.add('on');
+                document.getElementById('led-eve1').classList.add('on');
             } 
             else if (estado === "SUBIENDO") {
-                document.getElementById('valvula-y1').classList.add('valvula-activa');
-                document.getElementById('valvula-y2').classList.add('valvula-activa');
                 document.querySelectorAll('.linea-presion').forEach(l => l.classList.add('linea-activa'));
-                ledY1.classList.add('on'); ledY2.classList.add('on');
-                dispPresion.innerText = "80.0 bar"; 
-                dispPresion.style.color = "#3498db";
-                barraPresion.style.width = "60%";
+                dispPresion.innerText = "80.0 bar"; dispPresion.style.color = "#3498db";
+                document.getElementById('barra-presion').style.width = "60%";
                 
-                cilY1Body.classList.add('cilindro-activo');
-                cilY2Body.classList.add('cilindro-activo');
+                cilY1Body.setAttribute('class', 'cilindro-cuerpo cilindro-activo');
+                cilY2Body.setAttribute('class', 'cilindro-cuerpo cilindro-activo');
+                impeller.classList.add('motor-run'); motorBomba.classList.add('motor-base-run');
                 diodeColor = "#3498db";
+
+                descY1.innerHTML = `Retorno a PMS.<br>Aceite regresando.`; hudY1.classList.add('hud-activo');
+                descY2.innerHTML = `Retorno a PMS.<br>Aceite regresando.`; hudY2.classList.add('hud-activo');
+                descBomba.innerHTML = `Válvulas en Alivio.`; hudBomba.classList.add('hud-activo');
+                
+                document.getElementById('led-eva1').classList.add('on');
+                document.getElementById('led-ia1').classList.add('on');
             } 
             else if (estado === "STOP") {
-                dispPresion.innerText = presionTrabajo.toFixed(1) + " bar"; 
-                dispPresion.classList.add('cool');
-                barraPresion.style.width = "10%";
+                dispPresion.innerText = presionTrabajo.toFixed(1) + " bar"; dispPresion.classList.add('cool');
+                document.getElementById('barra-presion').style.width = "10%";
+                descY1.innerHTML = "Estado: Reposo.<br>Fuerza: 0 Ton.";
+                descY2.innerHTML = "Estado: Reposo.<br>Sincronización PLC OK.";
+                descX.innerHTML = "Fija la profundidad de la chapa.";
+                descC.innerHTML = "Se activa solo en Prensado.";
+                descZT.innerHTML = "Realimentación Lazo Cerrado.<br>Leyendo posición.";
+                descBomba.innerHTML = "Motor M-01 en reposo.<br>Manifold cerrado.";
+                
+                document.getElementById('led-sf9').classList.remove('error'); document.getElementById('led-sf9').classList.add('on');
             }
 
-            diodoZT1.style.fill = diodeColor;
-            diodoZT2.style.fill = diodeColor;
+            diodoZT1.style.fill = diodeColor; diodoZT2.style.fill = diodeColor;
         }
 
         function cicloFisica() {
             if (estado === "BAJANDO") {
                 posY += (VEL_Y_DOWN / FPS);
                 if (posY >= objY) {
-                    posY = objY;
-                    estado = "HOLD"; 
-                    clearInterval(loopID);
-                    actualizarInterfaz();
-                    
-                    logMsg(`Golpe en cota ${objY.toFixed(1)}mm. Prensando a ${presionTrabajo} bar por ${tiempoMute}s.`);
-                    
-                    tempAceite += 0.3;
-                    dispTemp.innerText = tempAceite.toFixed(1) + " °C";
+                    posY = objY; estado = "HOLD"; clearInterval(loopID); actualizarInterfaz();
+                    tempAceite += 0.5; document.getElementById('display-temp').innerText = tempAceite.toFixed(1) + " °C";
                     
                     timerID = setTimeout(() => {
-                        if (estado === "HOLD") {
-                            estado = "SUBIENDO";
-                            loopID = setInterval(cicloFisica, 1000 / FPS);
-                        }
+                        if (estado === "HOLD") { estado = "SUBIENDO"; loopID = setInterval(cicloFisica, 1000 / FPS); }
                     }, tiempoMute * 1000);
                 }
             } 
             else if (estado === "SUBIENDO") {
                 posY -= (VEL_Y_UP / FPS);
                 if (posY <= 0) {
-                    posY = 0;
-                    clearInterval(loopID);
-
+                    posY = 0; clearInterval(loopID);
                     if (modoOperacion === "teach" && indiceGolpeActual < colaCotasTeach.length) {
-                        objY = colaCotasTeach[indiceGolpeActual];
-                        indiceGolpeActual++;
-                        logMsg(`>>> Siguiente golpe de secuencia (Cota: ${objY.toFixed(1)} mm)`);
-                        estado = "BAJANDO";
-                        loopID = setInterval(cicloFisica, 1000 / FPS);
+                        objY = colaCotasTeach[indiceGolpeActual]; indiceGolpeActual++;
+                        estado = "AJUSTE_X";
+                        objX = 100.0 + (Math.random() * 50); posX = objX; actualizarInterfaz();
+                        setTimeout(() => { estado = "BAJANDO"; loopID = setInterval(cicloFisica, 1000 / FPS); }, 800);
                     } else {
-                        estado = "STOP";
-                        logMsg("Secuencia Multi-Golpe Finalizada.");
+                        estado = "STOP"; logMsg("Ciclo Finalizado.");
                     }
                 }
             }
@@ -747,103 +978,53 @@
         function parseNum(val) { return parseFloat(val.replace(',', '.')); }
 
         function cmdStart() {
-            if (estado === "EMG" || laserBloqueado || fallaAceite) {
-                logMsg("ERROR: Sistema bloqueado por Seguridad."); return;
-            }
+            if (estado === "EMG" || laserBloqueado || fallaAceite) { alert("Desbloquee Seguridad."); return; }
             if (estado !== "STOP") return;
 
             if (modoOperacion === "teach") {
-                if (verticesTrazo.length < 2) {
-                    alert("Marque al menos 2 vértices en el panel Teach.");
-                    return;
-                }
-                colaCotasTeach = verticesTrazo.map(p => Math.min(90, Math.max(15, (p.y / canvasTeach.height) * 90)));
-                indiceGolpeActual = 0;
-                
-                objY = colaCotasTeach[indiceGolpeActual];
-                indiceGolpeActual++;
-                objX = 120.0;
-                tiempoMute = 1.5;
-                logMsg(`>>> INICIO SECUENCIA TEACH | Total golpes: ${colaCotasTeach.length}`);
+                if (verticesTrazo.length < 2) { alert("Marque al menos 2 vértices (1 pliegue)."); return; }
+                colaCotasTeach = verticesTrazo.map(p => Math.min(100, Math.max(10, (p.y / canvasTeach.height) * 100)));
+                indiceGolpeActual = 0; objY = colaCotasTeach[indiceGolpeActual]; indiceGolpeActual++;
+                objX = 120.0; tiempoMute = parseFloat(document.getElementById('tiempo-mute').value) || 1.5;
+                logMsg(`>>> EJECUCIÓN CAD | Pliegue #1 de ${colaCotasTeach.length}`);
             } else {
-                let cY = parseNum(inCotaY.value);
-                let cX = parseNum(inCotaX.value);
-                let tM = parseNum(inMute.value);
-                
-                if (isNaN(cY) || isNaN(cX) || isNaN(tM)) return;
-                
-                objY = cY > 100 ? 100 : (cY < 0 ? 0 : cY);
-                objX = cX > 300 ? 300 : (cX < 0 ? 0 : cX); 
-                tiempoMute = tM;
-                logMsg(`>>> CICLO MANUAL | Cota: ${objY} mm`);
+                objY = parseFloat(inCotaY.value.replace(',', '.')); objX = parseFloat(inCotaX.value.replace(',', '.'));
+                tiempoMute = parseFloat(document.getElementById('tiempo-mute').value.replace(',', '.'));
+                if (isNaN(objY) || isNaN(objX) || isNaN(tiempoMute)) return;
+                objY = objY > 100 ? 100 : (objY < 0 ? 0 : objY); objX = objX > 300 ? 300 : (objX < 0 ? 0 : objX); 
             }
-
-            estado = "AJUSTE_X";
-            posX = objX; 
-            actualizarInterfaz();
-
-            setTimeout(() => {
-                if (estado === "AJUSTE_X") {
-                    logMsg(`Tope X listo. Iniciando bajada...`);
-                    estado = "BAJANDO";
-                    loopID = setInterval(cicloFisica, 1000 / FPS);
-                }
-            }, 1000);
+            estado = "AJUSTE_X"; posX = objX; actualizarInterfaz();
+            setTimeout(() => { if (estado === "AJUSTE_X") { estado = "BAJANDO"; loopID = setInterval(cicloFisica, 1000 / FPS); } }, 1000);
         }
 
         function cmdCortarLaser() {
             if (estado === "EMG" && fallaAceite) return;
-            laserBloqueado = true;
-            ledLaser.classList.remove('on'); ledLaser.classList.add('error');
-            dibujoLaser.classList.add('roto');
-            logMsg("!!! ALARMA AOPD: INTRUSIÓN EN CORTINA LÁSER !!!");
-            cmdEmergencia();
+            laserBloqueado = true; document.getElementById('led-laser').classList.remove('on'); document.getElementById('led-laser').classList.add('error');
+            lineaLaser.classList.add('roto'); logMsg("!!! ALARMA AKAS: INTRUSIÓN EN CORTINA !!!"); cmdEmergencia();
         }
 
         function cmdFugaAceite() {
             if (estado === "EMG" && laserBloqueado) return;
-            fallaAceite = true;
-            ledLS.classList.remove('on'); ledLS.classList.add('error');
-            dispNivel.innerText = "NIVEL BAJO"; dispNivel.classList.remove('cool'); dispNivel.classList.add('alerta');
-            logMsg("!!! ALARMA LS-101: NIVEL DE ACEITE CRÍTICO !!!");
-            cmdEmergencia();
+            fallaAceite = true; document.getElementById('led-ls').classList.remove('on'); document.getElementById('led-ls').classList.add('error');
+            document.getElementById('display-nivel').innerText = "NIVEL BAJO"; document.getElementById('display-nivel').classList.remove('cool'); document.getElementById('display-nivel').classList.add('alerta');
+            logMsg("!!! ALARMA LS-101: NIVEL DE ACEITE CRÍTICO !!!"); cmdEmergencia();
         }
 
         function cmdEmergencia() {
-            estado = "EMG";
-            clearInterval(loopID);
-            clearTimeout(timerID);
-            ledAlm.classList.add('error');
-            actualizarInterfaz();
+            estado = "EMG"; clearInterval(loopID); clearTimeout(timerID);
+            document.getElementById('led-alm').classList.add('error'); actualizarInterfaz();
         }
 
         function cmdRearme() {
             if (estado === "EMG") {
-                laserBloqueado = false;
-                ledLaser.classList.remove('error'); ledLaser.classList.add('on');
-                dibujoLaser.classList.remove('roto');
-
-                fallaAceite = false;
-                ledLS.classList.remove('error'); ledLS.classList.add('on');
-                dispNivel.innerText = "NORMAL"; dispNivel.classList.remove('alerta'); dispNivel.classList.add('cool');
+                laserBloqueado = false; document.getElementById('led-laser').classList.remove('error'); document.getElementById('led-laser').classList.add('on'); lineaLaser.classList.remove('roto');
+                fallaAceite = false; document.getElementById('led-ls').classList.remove('error'); document.getElementById('led-ls').classList.add('on');
+                document.getElementById('display-nivel').innerText = "NORMAL"; document.getElementById('display-nivel').classList.remove('alerta'); document.getElementById('display-nivel').classList.add('cool');
                 
-                estado = "STOP";
-                ledAlm.classList.remove('error');
-                ledBomba.classList.add('on');
-                document.getElementById('bomba-motor').classList.add('bomba-activa');
+                estado = "STOP"; document.getElementById('led-alm').classList.remove('error');
+                if (tempAceite > 65.0) { tempAceite = 25.0; document.getElementById('display-temp').innerText = "25.0 °C"; }
                 
-                if (tempAceite > 65.0) {
-                    tempAceite = 25.0; 
-                    dispTemp.classList.remove('alerta'); dispTemp.classList.add('cool'); dispTemp.innerText = "25.0 °C";
-                    logMsg("Sistema de Enfriamiento ejecutado. Aceite OK.");
-                }
-
-                logMsg("Rearme Ejecutado (RESET). Sistema Listo.");
-                
-                if (posY > 0) {
-                    estado = "SUBIENDO";
-                    loopID = setInterval(cicloFisica, 1000 / FPS);
-                }
+                if (posY > 0) { estado = "SUBIENDO"; loopID = setInterval(cicloFisica, 1000 / FPS); }
                 actualizarInterfaz();
             }
         }
