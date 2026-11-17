@@ -123,35 +123,45 @@
         .hud-alerta { background-color: rgba(231, 76, 60, 0.95); border-left-color: #c0392b; color: #fff; }
         .hud-alerta .hud-title { color: #f1c40f; border-bottom-color: rgba(255,255,255,0.5); }
 
-        /* ESTILOS PRESENTACIÓN PPT (PAUTA DOCENTE) */
+        /* ESTILOS PRESENTACIÓN PPT (TAMAÑOS AUMENTADOS) */
         .ppt-container { flex-grow: 1; padding: 20px 40px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow-y: auto;}
         .ppt-slide { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: 100%; animation: fadeIn 0.4s; }
         .ppt-slide.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .ppt-slide svg.logo-portada { max-height: 140px; margin-bottom: 20px; }
-        .ppt-slide h1 { color: #2c3e50; font-size: 32px; margin-bottom: 5px; text-transform: uppercase;}
-        .ppt-slide h2 { color: #e67e22; font-size: 24px; margin-bottom: 20px; border-bottom: 3px solid #34495e; padding-bottom: 10px; width: 100%; max-width: 900px;}
-        .ppt-content { font-size: 16px; color: #34495e; text-align: left; width: 100%; max-width: 900px; line-height: 1.6; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .ppt-slide svg.logo-portada { max-height: 160px; margin-bottom: 25px; }
+        .ppt-slide h1 { color: #2c3e50; font-size: 36px; margin-bottom: 5px; text-transform: uppercase;}
+        
+        /* Aumento del ancho máximo para aprovechar la pantalla */
+        .ppt-slide h2 { color: #e67e22; font-size: 28px; margin-bottom: 20px; border-bottom: 3px solid #34495e; padding-bottom: 10px; width: 100%; max-width: 1200px;}
+        .ppt-content { font-size: 18px; color: #34495e; text-align: left; width: 100%; max-width: 1200px; line-height: 1.6; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
         .ppt-content.center { text-align: center; }
         .ppt-content ul { padding-left: 20px; margin-top: 10px;}
-        .ppt-content li { margin-bottom: 10px; }
+        .ppt-content li { margin-bottom: 12px; }
         .ppt-content strong { color: #2980b9; }
         
-        .ficha-tecnica { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #ecf0f1; padding-bottom: 15px;}
+        /* FICHAS TÉCNICAS MÁS GRANDES */
+        .ficha-tecnica { display: flex; gap: 30px; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #ecf0f1; padding-bottom: 20px;}
         .ficha-tecnica:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
-        .ficha-img { flex: 0 0 250px; text-align: center; background-color: #f8f9fa; border: 1px solid #bdc3c7; border-radius: 6px; padding: 10px; height: 200px; display: flex; align-items: center; justify-content: center;}
+        
+        /* Incremento significativo del contenedor de la imagen */
+        .ficha-img { flex: 0 0 450px; text-align: center; background-color: #f8f9fa; border: 2px solid #bdc3c7; border-radius: 6px; padding: 10px; height: 280px; display: flex; align-items: center; justify-content: center;}
         .ficha-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
         .ficha-datos { flex: 1; }
-        .ficha-datos h3 { margin: 0 0 10px 0; color: #d35400; font-size: 18px;}
-        .ficha-datos p { margin: 5px 0; font-size: 14px;}
-        .ficha-datos .tag { background: #2c3e50; color: #fff; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; margin-right: 5px;}
+        .ficha-datos h3 { margin: 0 0 12px 0; color: #d35400; font-size: 22px;}
+        .ficha-datos p { margin: 8px 0; font-size: 16px;}
+        .ficha-datos .tag { background: #2c3e50; color: #fff; padding: 4px 8px; border-radius: 4px; font-family: monospace; font-size: 14px; margin-right: 5px;}
 
         .ppt-controls { background: #34495e; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white;}
         .ppt-btn { background: #f1c40f; border: none; color: #2c3e50; font-weight: bold; font-size: 16px; padding: 10px 20px; border-radius: 4px; cursor: pointer; transition: 0.2s;}
         .ppt-btn:hover { background: #f39c12; }
         .ppt-counter { font-family: monospace; font-size: 16px; }
 
+        @media (max-width: 1100px) {
+            .ficha-img { flex: 0 0 350px; height: 220px; }
+        }
         @media (max-width: 900px) {
             body { height: auto; overflow: auto; }
             .layout-principal { flex-direction: column; }
@@ -190,7 +200,6 @@
 
     <!-- ========================================== -->
     <!-- VISTA 1: PRESENTACIÓN ACADÉMICA (PPTX)     -->
-    <!-- CON RUTAS ACTUALIZADAS PARA GITHUB         -->
     <!-- ========================================== -->
     <div id="vista-presentacion" style="display: flex;">
         <div class="ppt-container">
@@ -227,11 +236,10 @@
 
             <div class="ppt-slide" id="slide-3">
                 <h2>Inventario de Sensores (Fichas Técnicas)</h2>
-                <div class="ppt-content" style="padding: 15px;">
+                <div class="ppt-content">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
-                            <img src="foto-sensor-optico.png" alt="Foto Sensor Óptico" onerror="this.style.display='none'">
+                            <img src="foto-sensor-optico.png" alt="Foto Sensor Óptico">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">ZT-101</span> Regla Óptica (Encoder Lineal GIVI)</h3>
@@ -242,8 +250,7 @@
                     </div>
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <!-- IMAGEN ACTUALIZADA (AHORA APUNTA A LA IMAGEN COMBINADA) -->
-                            <img src="foto-motobomba-sensor-tanque.png" alt="Foto Sensores Tanque" onerror="this.style.display='none'">
+                            <img src="foto-motobomba-sensor-tanque.png" alt="Foto Sensores Tanque">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">TT-101 / LS-101</span> Sensores de Tanque (Temperatura y Nivel)</h3>
@@ -257,11 +264,10 @@
 
             <div class="ppt-slide" id="slide-4">
                 <h2>Inventario de Actuadores (Fichas Técnicas)</h2>
-                <div class="ppt-content" style="padding: 15px;">
+                <div class="ppt-content">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
-                            <img src="foto-bloque-hidraulico.png" alt="Bloque Hidráulico Hoerbiger" onerror="this.style.display='none'">
+                            <img src="foto-bloque-hidraulico.png" alt="Bloque Hidráulico Hoerbiger">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">TY-Y1 / EVE1</span> Válvulas Proporcionales Servoasistidas</h3>
@@ -271,8 +277,7 @@
                     </div>
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <!-- IMAGEN ACTUALIZADA (APUNTA A LA IMAGEN COMBINADA) -->
-                            <img src="foto-motobomba-sensor-tanque.png" alt="Motor y Bomba" onerror="this.style.display='none'">
+                            <img src="foto-motobomba-sensor-tanque.png" alt="Motor y Bomba">
                         </div>
                         <div class="ficha-datos">
                             <h3><span class="tag">M-01</span> Grupo Motobomba Trifásico</h3>
@@ -286,11 +291,10 @@
 
             <div class="ppt-slide" id="slide-5">
                 <h2>Interpretación de Planos del Equipo</h2>
-                <div class="ppt-content" style="padding: 15px;">
+                <div class="ppt-content">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
-                            <img src="foto-plano.png" alt="Plano Eléctrico/Hidráulico" onerror="this.style.display='none'">
+                            <img src="foto-plano.png" alt="Plano Eléctrico/Hidráulico">
                         </div>
                         <div class="ficha-datos">
                             <h3>Planos Fuerza, Control y P&ID</h3>
@@ -306,11 +310,10 @@
 
             <div class="ppt-slide" id="slide-6">
                 <h2>Seguridad, Protecciones y Enclavamientos</h2>
-                <div class="ppt-content" style="padding: 15px;">
+                <div class="ppt-content">
                     <div class="ficha-tecnica">
                         <div class="ficha-img">
-                            <!-- IMAGEN ACTUALIZADA CON RUTA CORRECTA -->
-                            <img src="foto-seguridad.png" alt="Cortina Láser AKAS" onerror="this.style.display='none'">
+                            <img src="foto-seguridad.png" alt="Cortina Láser AKAS">
                         </div>
                         <div class="ficha-datos">
                             <h3>Sistema de Seguridad Integrado</h3>
@@ -318,6 +321,7 @@
                                 <li><strong>Cortina Láser (AOPD) Fiessler AKAS:</strong> Diodo transmisor (TX) y receptor (RX). Si se cruza el haz, el relé de seguridad (-SEG2) corta las válvulas.</li>
                                 <li><strong>Bisagras de Seguridad (-SF9, -SF10):</strong> Enclavamientos de puertas laterales que cortan el circuito.</li>
                                 <li><strong>Parada de Emergencia (E-STOP -SF2):</strong> Pulsador que abre el circuito de fuerza.</li>
+                                <li><strong>Válvula Limitadora de Presión:</strong> Bypass mecánico de protección en el bloque manifold que retorna el aceite al tanque si la presión excede la capacidad.</li>
                             </ul>
                         </div>
                     </div>
